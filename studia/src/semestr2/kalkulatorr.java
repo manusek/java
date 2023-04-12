@@ -1,4 +1,4 @@
-
+package semestr2;
 
 import java.util.Scanner;
 
