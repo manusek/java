@@ -22,8 +22,6 @@ public class SamochodOsobowy extends Samochod {
         ilOsob = super.InputInt();
     }
 
-
-
     public double InputDouble(){
         Scanner scanner = new Scanner(System.in);
         return scanner.nextDouble();
