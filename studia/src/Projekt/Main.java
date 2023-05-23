@@ -1,2 +1,7 @@
-package Projekt;public class Main {
+package Projekt;
+
+public class Main {
+    public static void main(String[] args) {
+
+    }
 }

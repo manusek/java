@@ -1,2 +1,4 @@
-package Projekt;public class Mieszkanie {
+package Projekt;
+
+public class Mieszkanie {
 }
