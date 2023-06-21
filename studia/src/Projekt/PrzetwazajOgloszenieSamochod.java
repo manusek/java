@@ -1,17 +1,14 @@
 package Projekt;
-import lab07_wstepInterfejsy.Samochod;
 
-import java.io.Closeable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class PrzetwazajOgloszenieSamochod {
 
-    List<OgloszenieSamochod> szamochodList = ZarzadzajBazaDanych.odczytajSamochodOgloszenia();
+    List<OgloszenieSamochod> samochodList = ZarzadzajBazaDanych.odczytajSamochodOgloszenia();
 
-    private static int nextId = 1;
+    //private static int nextId = 1;
 
     public void dodajOgloszenie() {
         System.out.println("=== Dodaj ogłoszenie ===");
@@ -25,24 +22,32 @@ public class PrzetwazajOgloszenieSamochod {
         System.out.print("Podaj cene: ");
         samochod.setPrice(Input());
 
-        samochod.setId(szamochodList.size() + 1);
+        System.out.print("Podaj przebieg: ");
+        samochod.setPrzebieg(Input());
 
-        szamochodList.add(samochod);
+        System.out.print("Podaj rok produkcji: ");
+        samochod.setRokProdukcji(Input());
 
-        System.out.println("Book created successfully.");
+        samochod.setId(samochodList.size() + 1);
+
+        samochodList.add(samochod);
+
+        System.out.println("Ogłoszenie zostało dodane.");
     }
 
     public void wyswietlOgloszenie() {
         System.out.println("=== Wyświetl ogłoszenie ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int bookId = Input();
+        int carId = Input();
 
-        OgloszenieSamochod book = findBookById(bookId);
-        if (book != null) {
-            System.out.println("ID: " + book.getId());
-            System.out.println("Tytuł: " + book.getTitle());
-            System.out.println("Tresc: " + book.getTresc());
-            System.out.println("Cena: " + book.getPrice());
+        OgloszenieSamochod auto = findCarById(carId);
+        if (auto != null) {
+            System.out.println("ID: " + auto.getId());
+            System.out.println("Tytuł: " + auto.getTitle());
+            System.out.println("Tresc: " + auto.getTresc());
+            System.out.println("Cena: " + auto.getPrice());
+            System.out.println("Przebieg: " + auto.getPrzebieg());
+            System.out.println("Rok produkcji: " + auto.getRokProdukcji());
         } else {
             System.out.println("Nie znaleziono ogłoszenia.");
         }
@@ -53,11 +58,13 @@ public class PrzetwazajOgloszenieSamochod {
         System.out.println("Lista ogłoszen ");
         System.out.println("-----------------------");
 
-        for (OgloszenieSamochod book : szamochodList) {
-                System.out.println("ID: " + book.getId());
-                System.out.println("Tytuł: " + book.getTitle());
-                System.out.println("Tresc: " + book.getTresc());
-                System.out.println("Cena: " + book.getPrice());
+        for (OgloszenieSamochod auto : samochodList) {
+                System.out.println("ID: " + auto.getId());
+                System.out.println("Tytuł: " + auto.getTitle());
+                System.out.println("Tresc: " + auto.getTresc());
+                System.out.println("Cena: " + auto.getPrice());
+                System.out.println("Przebieg: " + auto.getPrzebieg());
+                System.out.println("Rok produkcji : " + auto.getRokProdukcji());
                 System.out.println("-----------------------");
         }
     }
@@ -66,9 +73,9 @@ public class PrzetwazajOgloszenieSamochod {
     public void edytujOgloszenie() {
         System.out.println("=== Edytuj ogłoszenia ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int bookId = Input();
+        int samochodID = Input();
 
-        OgloszenieSamochod samochod = findBookById(bookId);
+        OgloszenieSamochod samochod = findCarById(samochodID);
         if (samochod != null) {
             System.out.print("Wpisz nowy tytuł: ");
             samochod.setTitle(InputS());
@@ -79,9 +86,15 @@ public class PrzetwazajOgloszenieSamochod {
             System.out.print("Podaj nową cene: ");
             samochod.setPrice(Input());
 
+            System.out.print("Podaj nowy przebieg: ");
+            samochod.setPrzebieg(Input());
+
+            System.out.print("Podaj nowy rok produkcji: ");
+            samochod.setRokProdukcji(Input());
+
             System.out.println("Ogłoszenie zostało zaaktualizowane.");
         } else {
-            System.out.println("Book not found.");
+            System.out.println("Nie znaleziono ogłoszenia.");
         }
     }
 
@@ -90,17 +103,17 @@ public class PrzetwazajOgloszenieSamochod {
         System.out.print("Podaj ID ogłoszenia: ");
         int bookId = Input();
 
-        OgloszenieSamochod samochod = findBookById(bookId);
+        OgloszenieSamochod samochod = findCarById(bookId);
         if (samochod != null) {
-            szamochodList.remove(samochod);
+            samochodList.remove(samochod);
             System.out.println("Ogłoszenie zostało usunięte.");
         } else {
-            System.out.println("Book not found.");
+            System.out.println("Nie znaleziono ogłoszenia.");
         }
     }
 
-    public OgloszenieSamochod findBookById(int id) {
-        for (OgloszenieSamochod samochod : szamochodList) {
+    public OgloszenieSamochod findCarById(int id) {
+        for (OgloszenieSamochod samochod : samochodList) {
             if (samochod.getId() == id) {
                 return samochod;
             }
@@ -119,6 +132,6 @@ public class PrzetwazajOgloszenieSamochod {
     }
 
     public void zamknij(){
-      ZarzadzajBazaDanych.zapiszSamochodOgloszenia(szamochodList);
+      ZarzadzajBazaDanych.zapiszSamochodOgloszenia(samochodList);
     }
 }

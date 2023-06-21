@@ -10,12 +10,9 @@ public class Main {
 
         public static void main(String[] args) {
 
-            ZarzadzajBazaDanych.utworzBazeDanych();
-
-             //List<OgloszenieMieszkanie> mieszkanieList = new ArrayList<>();
+             ZarzadzajBazaDanych.utworzBazeDanych();
 
              Scanner input = new Scanner(System.in);
-
 
              while(true){
                  System.out.println("Wybierz typ: ");
@@ -28,7 +25,7 @@ public class Main {
                          MenuSamochod.wyswietlMenu();
                          break;
                      case 2:
-                         //ogloszenie.wyswietlOgloszenie();
+                         MenuMieszkanie.wyswietlMenu();
                          break;
                      case 3:
                          //ogloszenie.edytujOgloszenie();

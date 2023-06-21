@@ -7,7 +7,6 @@ public class OgloszenieSamochod extends Ogloszenie{
 
     public OgloszenieSamochod(){};
 
-
     public int getRokProdukcji() {
         return rokProdukcji;
     }
