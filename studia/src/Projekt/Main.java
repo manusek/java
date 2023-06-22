@@ -1,26 +1,23 @@
 package Projekt;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
 
         public static void main(String[] args) {
 
              ZarzadzajBazaDanych.utworzBazeDanych();
 
-             Scanner input = new Scanner(System.in);
+             Scanner inputInt = new Scanner(System.in);
 
              while(true){
-                 System.out.println("Wybierz typ: ");
                  System.out.println("1 Samochod");
                  System.out.println("2 Mieszkanie");
-                 System.out.println("3 Zakoncz");
-                 int wybor2 = input.nextInt();
-                 switch (wybor2){
+                 System.out.println("3 Zwierzę");
+                 System.out.println("4 Zakoncz");
+                 System.out.print("Wybierz typ: ");
+                 int choice = inputInt.nextInt();
+                 switch (choice){
                      case 1:
                          MenuSamochod.wyswietlMenu();
                          break;
@@ -28,12 +25,12 @@ public class Main {
                          MenuMieszkanie.wyswietlMenu();
                          break;
                      case 3:
-                         //ogloszenie.edytujOgloszenie();
+                         MenuZwierze.wyswietlMenu();
                          break;
                      case 4:
                          System.exit(0);
                      default:
-                         System.out.println("Invalid choice. Please try again.");
+                         System.out.println("Wpisz poprawny wynik.");
                  }
              }
         }

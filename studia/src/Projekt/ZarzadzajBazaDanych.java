@@ -44,7 +44,7 @@ public class ZarzadzajBazaDanych {
     }
 
     private static void createAnimalsTable(Connection connection) throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS cars (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT)";
+        String sql = "CREATE TABLE IF NOT EXISTS animals (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, gatunek TEXT, wiek INTEGER)";
         Statement statement = connection.createStatement();
         statement.execute(sql);
         statement.close();
@@ -137,8 +137,44 @@ public class ZarzadzajBazaDanych {
         return mieszkanieList;
     }
 
-    public static List<OgloszenieSamochod> odczytajZwierzetaOgloszenia() {
-        return null;
+    public static List<OgloszenieZwierze> odczytajZwierzetaOgloszenia() {
+        List<OgloszenieZwierze> zwierzeList = new ArrayList<>();
+
+        Connection connection = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection(DB_URL);
+
+            String sql = "SELECT * FROM animals";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String desc = resultSet.getString("description");
+                String gat = resultSet.getString("gatunek");
+                int wiek = resultSet.getInt("wiek");
+
+                OgloszenieZwierze ani = new OgloszenieZwierze();
+                ani.setId(id);
+                ani.setTitle(name);
+                ani.setTresc(desc);
+                ani.setGatunek(gat);
+                ani.setWiek(wiek);
+
+                zwierzeList.add(ani);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return zwierzeList;
     }
 
     public static void zapiszSamochodOgloszenia(List<OgloszenieSamochod> szamochodList) {
@@ -190,6 +226,36 @@ public class ZarzadzajBazaDanych {
                 preparedStatement.setString(3, mieszkanie.getTresc());
                 preparedStatement.setInt(3, mieszkanie.getPietro());
                 preparedStatement.setInt(3, mieszkanie.getWielkosc());
+                preparedStatement.executeUpdate();
+            }
+
+            preparedStatement.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void zapiszZwierzetaOgloszenia(List<OgloszenieZwierze> zwierzeList) {
+        Connection connection = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection(DB_URL);
+
+            String sql = "DELETE FROM animals";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.executeUpdate();
+
+            for(OgloszenieZwierze zwierze : zwierzeList){
+
+                sql = "INSERT INTO cars (id, name, description, przebieg, rokProdukcji) VALUES (?, ?, ?, ?, ?)";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, zwierze.getId());
+                preparedStatement.setString(2, zwierze.getTitle());
+                preparedStatement.setString(3, zwierze.getTresc());
+                preparedStatement.setString(3, zwierze.getGatunek());
+                preparedStatement.setInt(3, zwierze.getWiek());
                 preparedStatement.executeUpdate();
             }
 
