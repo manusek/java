@@ -1,48 +1,128 @@
 package Projekt;
 
-import java.util.Scanner;
+import java.util.List;
 
-public class MenuMieszkanie {
-    static PrzetwarzajOgloszenieMieszkanie ogloszenie = new PrzetwarzajOgloszenieMieszkanie();
+public class MenuMieszkanie extends Menu {
 
-    public static void wyswietlMenu() {
-        Scanner input = new Scanner(System.in);
+    private List<OgloszenieMieszkanie> mieszkanieList = ZarzadzajBazaDanych.odczytajMieszkanieOgloszenia();
 
-        while (true) {
-            System.out.println("=== Book CRUD Application ===");
-            System.out.println("1. Dodaj ogłoszenie");
-            System.out.println("2. Wyswietl ogłoszenia");
-            System.out.println("3. Edytuj ogłoszenie");
-            System.out.println("4. Usun ogłoszenie");
-            System.out.println("5. Wyjdz");
-            System.out.println("6. Wyswietl wszystkie ogloszenia");
-            System.out.print("Wybierz operację: ");
-            int wybor = input.nextInt();
+    @Override
+    public void DodajOgloszenie() {
+        System.out.println("=== Dodaj ogłoszenie ===");
+        OgloszenieMieszkanie mieszkanie = new OgloszenieMieszkanie();
+        System.out.print("Wpisz tytuł: ");
+        mieszkanie.setTitle(InputS());
 
-            switch (wybor) {
-                case 1:
-                    ogloszenie.dodajOgloszenie();
-                    break;
-                case 2:
-                    ogloszenie.wyswietlOgloszenie();
-                    break;
-                case 3:
-                    ogloszenie.edytujOgloszenie();
-                    break;
-                case 4:
-                    ogloszenie.usunOgloszenie();
-                    break;
-                case 5:
-                    System.out.println("Exiting the application...");
-                    ogloszenie.zamknij();
-                    System.exit(0);
-                case 6:
-                    ogloszenie.wyswietlWszystkieOgloszenia();
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
+        System.out.print("Wpisz treść: ");
+        mieszkanie.setTresc(InputS());
+
+        System.out.print("Podaj cene: ");
+        mieszkanie.setPrice(Input());
+
+        System.out.print("Podaj wielkosc: ");
+        mieszkanie.setWielkosc(Input());
+
+        System.out.print("Podaj pietro: ");
+        mieszkanie.setPietro(Input());
+
+        mieszkanie.setId(mieszkanieList.size() + 1);
+
+        mieszkanieList.add(mieszkanie);
+
+        System.out.println("Ogłoszenie zostało dodane.");
+    }
+
+    @Override
+    public void WyswietlOgloszenie() {
+        System.out.println("=== Wyświetl ogłoszenie ===");
+        System.out.print("Podaj ID ogłoszenia: ");
+        int mieszkanieID = Input();
+
+        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
+        if (mieszkanie != null) {
+            System.out.println("ID: " + mieszkanie.getId());
+            System.out.println("Tytuł: " + mieszkanie.getTitle());
+            System.out.println("Tresc: " + mieszkanie.getTresc());
+            System.out.println("Cena: " + mieszkanie.getPrice());
+            System.out.println("Pietro: " + mieszkanie.getPietro());
+            System.out.println("Wielkosc[m^2]: " + mieszkanie.getWielkosc());
+        } else {
+            System.out.println("Nie znaleziono ogłoszenia.");
         }
     }
 
+    @Override
+    public void EdytujOgloszenie() {
+        System.out.println("=== Edytuj ogłoszenia ===");
+        System.out.print("Podaj ID ogłoszenia: ");
+        int mieszkanieID = Input();
+
+        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
+        if (mieszkanie != null) {
+            System.out.print("Wpisz nowy tytuł: ");
+            mieszkanie.setTitle(InputS());
+
+            System.out.print("Wpisz nową treść: ");
+            mieszkanie.setTresc(InputS());
+
+            System.out.print("Podaj nową cene: ");
+            mieszkanie.setPrice(Input());
+
+            System.out.print("Podaj nowe pietro: ");
+            mieszkanie.setPietro(Input());
+
+            System.out.print("Podaj nową wielkosc: ");
+            mieszkanie.setWielkosc(Input());
+
+            System.out.println("Ogłoszenie zostało zaaktualizowane.");
+        } else {
+            System.out.println("Nie znaleziono ogłoszenia.");
+        }
+    }
+
+    @Override
+    public void UsunOgloszenie() {
+        System.out.println("=== Usuń ogłoszenie ===");
+        System.out.print("Podaj ID ogłoszenia: ");
+        int mieszkanieID = Input();
+
+        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
+        if (mieszkanie != null) {
+            mieszkanieList.remove(mieszkanie);
+            System.out.println("Ogłoszenie zostało usunięte.");
+        } else {
+            System.out.println("Nie znaleziono ogłoszenia.");
+        }
+    }
+
+    @Override
+    public void WyswietlWszystkieOgloszenia() {
+        System.out.println("=== Wyświetl ogłoszenie ===");
+        System.out.println("Lista ogłoszen ");
+        System.out.println("-----------------------");
+
+        for (OgloszenieMieszkanie mieszkanie : mieszkanieList) {
+            System.out.println("ID: " + mieszkanie.getId());
+            System.out.println("Tytuł: " + mieszkanie.getTitle());
+            System.out.println("Tresc: " + mieszkanie.getTresc());
+            System.out.println("Cena: " + mieszkanie.getPrice());
+            System.out.println("Pietro: " + mieszkanie.getPietro());
+            System.out.println("Wielkosc[m^2] : " + mieszkanie.getWielkosc());
+            System.out.println("-----------------------");
+        }
+    }
+
+    @Override
+    public void ZakonczOgloszenia() {
+        ZarzadzajBazaDanych.zapiszMieszkanieOgloszenia(mieszkanieList);
+    }
+
+    private OgloszenieMieszkanie findMieszkanieById(int id) {
+        for (OgloszenieMieszkanie mieszkanie : mieszkanieList) {
+            if (mieszkanie.getId() == id) {
+                return mieszkanie;
+            }
+        }
+        return null;
+    }
 }

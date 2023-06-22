@@ -37,14 +37,14 @@ public class ZarzadzajBazaDanych {
     }
 
     private static void createCarsTable(Connection connection) throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS cars (id INTEGER PRIMARY KEY, name TEXT, description TEXT, przebieg INTEGER, rokProdukcji INTEGER)";
+        String sql = "CREATE TABLE IF NOT EXISTS cars (id INTEGER PRIMARY KEY, name TEXT, description TEXT,cena INTEGER, przebieg INTEGER, rokProdukcji INTEGER)";
         Statement statement = connection.createStatement();
         statement.execute(sql);
         statement.close();
     }
 
     private static void createAnimalsTable(Connection connection) throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS animals (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, gatunek TEXT, wiek INTEGER)";
+        String sql = "CREATE TABLE IF NOT EXISTS animals (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, gatunek TEXT, wiek INTEGER)";
         Statement statement = connection.createStatement();
         statement.execute(sql);
         statement.close();
@@ -70,18 +70,13 @@ public class ZarzadzajBazaDanych {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String desc = resultSet.getString("description");
-                int przebieg = resultSet.getInt("przebieg");
-                int rokProdukcji = resultSet.getInt("rokProdukcji");
-
                 OgloszenieSamochod sam = new OgloszenieSamochod();
-                sam.setId(id);
-                sam.setTitle(name);
-                sam.setTresc(desc);
-                sam.setPrzebieg(przebieg);
-                sam.setRokProdukcji(rokProdukcji);
+                sam.setId(resultSet.getInt("id"));
+                sam.setTitle(resultSet.getString("name"));
+                sam.setTresc(resultSet.getString("description"));
+                sam.setPrice(resultSet.getInt("cena"));
+                sam.setPrzebieg(resultSet.getInt("przebieg"));
+                sam.setRokProdukcji(resultSet.getInt("rokProdukcji"));
 
                 samochodList.add(sam);
             }
@@ -189,13 +184,14 @@ public class ZarzadzajBazaDanych {
 
             for(OgloszenieSamochod samochod : szamochodList){
 
-                sql = "INSERT INTO cars (id, name, description, przebieg, rokProdukcji) VALUES (?, ?, ?, ?, ?)";
+                sql = "INSERT INTO cars (id, name, description, cena, przebieg, rokProdukcji) VALUES (?, ?, ?, ?, ?, ?)";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, samochod.getId());
                 preparedStatement.setString(2, samochod.getTitle());
                 preparedStatement.setString(3, samochod.getTresc());
-                preparedStatement.setInt(3, samochod.getPrzebieg());
-                preparedStatement.setInt(3, samochod.getRokProdukcji());
+                preparedStatement.setInt(4, samochod.getPrice());
+                preparedStatement.setInt(5, samochod.getPrzebieg());
+                preparedStatement.setInt(6, samochod.getRokProdukcji());
                 preparedStatement.executeUpdate();
             }
 
@@ -224,8 +220,8 @@ public class ZarzadzajBazaDanych {
                 preparedStatement.setInt(1, mieszkanie.getId());
                 preparedStatement.setString(2, mieszkanie.getTitle());
                 preparedStatement.setString(3, mieszkanie.getTresc());
-                preparedStatement.setInt(3, mieszkanie.getPietro());
-                preparedStatement.setInt(3, mieszkanie.getWielkosc());
+                preparedStatement.setInt(4, mieszkanie.getPietro());
+                preparedStatement.setInt(5, mieszkanie.getWielkosc());
                 preparedStatement.executeUpdate();
             }
 
@@ -249,13 +245,13 @@ public class ZarzadzajBazaDanych {
 
             for(OgloszenieZwierze zwierze : zwierzeList){
 
-                sql = "INSERT INTO cars (id, name, description, przebieg, rokProdukcji) VALUES (?, ?, ?, ?, ?)";
+                sql = "INSERT INTO animals (id, name, description, gatunek , wiek) VALUES (?, ?, ?, ?, ?)";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, zwierze.getId());
                 preparedStatement.setString(2, zwierze.getTitle());
                 preparedStatement.setString(3, zwierze.getTresc());
-                preparedStatement.setString(3, zwierze.getGatunek());
-                preparedStatement.setInt(3, zwierze.getWiek());
+                preparedStatement.setString(4, zwierze.getGatunek());
+                preparedStatement.setInt(5, zwierze.getWiek());
                 preparedStatement.executeUpdate();
             }
 
