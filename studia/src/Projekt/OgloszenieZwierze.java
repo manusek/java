@@ -1,25 +1,25 @@
 package Projekt;
 
 public class OgloszenieZwierze extends Ogloszenie{
-    private String gatunek;
+    private String speciesOfAnimal;
 
-    private int wiek;
+    private int age;
 
     public OgloszenieZwierze(){};
 
-    public String getGatunek() {
-        return gatunek;
+    public String getSpeciesOfAnimal() {
+        return speciesOfAnimal;
     }
 
-    public void setGatunek(String gatunek) {
-        this.gatunek = gatunek;
+    public void setSpeciesOfAnimal(String speciesOfAnimal) {
+        this.speciesOfAnimal = speciesOfAnimal;
     }
 
-    public int getWiek() {
-        return wiek;
+    public int getAge() {
+        return age;
     }
 
-    public void setWiek(int wiek) {
-        this.wiek = wiek;
+    public void setAge(int age) {
+        this.age = age;
     }
 }

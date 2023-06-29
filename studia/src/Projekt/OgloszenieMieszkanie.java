@@ -1,25 +1,25 @@
 package Projekt;
 
 public class OgloszenieMieszkanie extends Ogloszenie{
-    private int wielkosc;
+    private int surface;
 
-    private int pietro;
+    private int floorNumber;
 
     public OgloszenieMieszkanie(){};
 
-    public int getWielkosc() {
-        return wielkosc;
+    public int getSurface() {
+        return surface;
     }
 
-    public void setWielkosc(int wielkosc) {
-        this.wielkosc = wielkosc;
+    public void setSurface(int surface) {
+        this.surface = surface;
     }
 
-    public int getPietro() {
-        return pietro;
+    public int getFloorNumber() {
+        return floorNumber;
     }
 
-    public void setPietro(int  pietro) {
-        this.pietro = pietro;
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
     }
 }

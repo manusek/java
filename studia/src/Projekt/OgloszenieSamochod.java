@@ -1,25 +1,25 @@
 package Projekt;
 
 public class OgloszenieSamochod extends Ogloszenie{
-    private int rokProdukcji;
+    private int yearOfProduction;
 
-    private int przebieg;
+    private int carMileage;
 
     public OgloszenieSamochod(){};
 
-    public int getRokProdukcji() {
-        return rokProdukcji;
+    public int getYearOfProduction() {
+        return yearOfProduction;
     }
 
-    public void setRokProdukcji(int rokProdukcji) {
-        this.rokProdukcji = rokProdukcji;
+    public void setYearOfProduction(int yearOfProduction) {
+        this.yearOfProduction = yearOfProduction;
     }
 
-    public int getPrzebieg() {
-        return przebieg;
+    public int getCarMileage() {
+        return carMileage;
     }
 
-    public void setPrzebieg(int przebieg) {
-        this.przebieg = przebieg;
+    public void setCarMileage(int carMileage) {
+        this.carMileage = carMileage;
     }
 }

@@ -7,7 +7,7 @@ public class Ogloszenie {
 
     private String title;
 
-    private String tresc;
+    private String description;
 
     public Ogloszenie(){};
 
@@ -24,15 +24,15 @@ public class Ogloszenie {
         this.title = title;
     }
 
-    public String getTresc() {
-        return tresc;
+    public String getDescription() {
+        return description;
     }
     public int getPrice() {
         return price;
     }
 
-    public void setTresc(String tresc) {
-        this.tresc = tresc;
+    public void setDescription(String description) {
+        this.description = description;
     }
     public void setPrice(int price) {
         this.price = price;

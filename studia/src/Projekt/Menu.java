@@ -9,7 +9,7 @@ public abstract class Menu {
 
         boolean stop = false;
         while (!stop) {
-            System.out.println("=== Book CRUD Application ===");
+            System.out.println("=================");
             System.out.println("1. Dodaj ogłoszenie");
             System.out.println("2. Wyswietl ogłoszenia");
             System.out.println("3. Edytuj ogłoszenie");
@@ -17,26 +17,40 @@ public abstract class Menu {
             System.out.println("5. Wyswietl wszystkie ogloszenia");
             System.out.println("6. Wyjdz");
             System.out.print("Wybierz operację: ");
-            int wybor = input.nextInt();
 
-            switch (wybor) {
+            boolean isValid = false;
+            int num = 0;
+            String choice;
+
+            while(isValid == false) {
+                choice = input.nextLine();
+                try{
+                    num = Integer.parseInt(choice);
+                    isValid = true;
+                } catch(NumberFormatException e)
+                {
+                    System.out.print("Podano niewłaściwy typ: ");
+                }
+            }
+
+            switch (num) {
                 case 1:
-                    DodajOgloszenie();
+                    addAdd();
                     break;
                 case 2:
-                    WyswietlOgloszenie();
+                    showAdd();
                     break;
                 case 3:
-                    EdytujOgloszenie();
+                    editAdd();
                     break;
                 case 4:
-                    UsunOgloszenie();
+                    deleteAdd();
                     break;
                 case 5:
-                    WyswietlWszystkieOgloszenia();
+                    showAllAds();
                     break;
                 case 6:
-                    ZakonczOgloszenia();
+                    exitTable();
                     stop = true;
                     break;
                 default:
@@ -45,17 +59,17 @@ public abstract class Menu {
         }
     }
 
-    public abstract void DodajOgloszenie();
+    public abstract void addAdd();
 
-    public abstract void WyswietlOgloszenie();
+    public abstract void showAdd();
 
-    public abstract void EdytujOgloszenie();
+    public abstract void editAdd();
 
-    public abstract void UsunOgloszenie();
+    public abstract void deleteAdd();
 
-    public abstract void WyswietlWszystkieOgloszenia();
+    public abstract void showAllAds();
 
-    public abstract void ZakonczOgloszenia();
+    public abstract void exitTable();
 
     public int Input(){
         Scanner input = new Scanner(System.in);
