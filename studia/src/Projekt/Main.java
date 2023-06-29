@@ -1,16 +1,19 @@
 package Projekt;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class Main {
 
         public static void main(String[] args) {
 
-            try {
                 ZarzadzajBazaDanych.utworzBazeDanych();
-                MenuMieszkanie menuMieszkanie = new MenuMieszkanie();
-                MenuSamochod menuSamochod = new MenuSamochod();
-                MenuZwierze menuZwierze = new MenuZwierze();
+
+                MenuMieszkanie houseMenu = new MenuMieszkanie();
+                MenuSamochod carMenu = new MenuSamochod();
+                MenuZwierze animalMenu = new MenuZwierze();
+
                 Scanner inputInt = new Scanner(System.in);
 
                 while (true) {
@@ -19,28 +22,40 @@ public class Main {
                     System.out.println("3 Zwierzę");
                     System.out.println("4 Zakoncz");
                     System.out.print("Wybierz typ: ");
-                    int choice = inputInt.nextInt();
-                    switch (choice) {
+
+                    boolean isValid = false;
+                    int num = 0;
+                    String choice;
+
+                    while(isValid == false) {
+                        choice = inputInt.nextLine();
+                        try{
+                            num = Integer.parseInt(choice);
+                            isValid = true;
+                        } catch(NumberFormatException e)
+                            {
+                                System.out.print("Podano niewłaściwy typ: ");
+                            }
+                    }
+
+                    switch (num) {
                         case 1:
-                            menuSamochod.wyswietlMenu();
+                            carMenu.wyswietlMenu();
                             break;
                         case 2:
-                            menuMieszkanie.wyswietlMenu();
+                            houseMenu.wyswietlMenu();
                             break;
                         case 3:
-                            menuZwierze.wyswietlMenu();
+                            animalMenu.wyswietlMenu();
                             break;
                         case 4:
                             System.exit(0);
                         default:
-                            throw new Exception("Wpisz poprawny wynik.");
+                            System.out.println("Wybierz poprawny wynik!");
                     }
                 }
             }
-            catch (Exception e) {
-                System.out.println("Wystąpił wyjątek. Opis: "+e.getMessage());
-                e.printStackTrace();
-            }
+
         }
-    }
+
 

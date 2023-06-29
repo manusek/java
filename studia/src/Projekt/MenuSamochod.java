@@ -4,75 +4,80 @@ import java.util.List;
 
 public class MenuSamochod extends Menu {
 
-    private List<OgloszenieSamochod> samochodList = ZarzadzajBazaDanych.odczytajSamochodOgloszenia();
-
+    private List<OgloszenieSamochod> carList = ZarzadzajBazaDanych.readCarsTable();
     @Override
-    public void DodajOgloszenie() {
+    public void addAdd() {
         System.out.println("=== Dodaj ogłoszenie ===");
-        OgloszenieSamochod samochod = new OgloszenieSamochod();
+        OgloszenieSamochod car = new OgloszenieSamochod();
         System.out.print("Wpisz tytuł: ");
-        samochod.setTitle(InputS());
+        car.setTitle(InputS());
 
         System.out.print("Wpisz treść: ");
-        samochod.setTresc(InputS());
+        car.setDescription(InputS());
 
-        System.out.print("Podaj cene: ");
-        samochod.setPrice(Input());
+        do {
+            System.out.print("Podaj cene: ");
+            car.setPrice(Input());
+        } while (car.getPrice() < 0);
 
-        System.out.print("Podaj przebieg: ");
-        samochod.setPrzebieg(Input());
+        do {
+            System.out.print("Podaj przebieg: ");
+            car.setCarMileage(Input());
+        } while (car.getCarMileage() < 0);
 
-        System.out.print("Podaj rok produkcji: ");
-        samochod.setRokProdukcji(Input());
+        do {
+            System.out.print("Podaj rok produkcji: ");
+            car.setYearOfProduction(Input());
+        }while (car.getYearOfProduction() < 0) ;
 
-        samochod.setId(samochodList.size() + 1);
+            car.setId(carList.size() + 1);
 
-        samochodList.add(samochod);
+            carList.add(car);
 
-        System.out.println("Ogłoszenie zostało dodane.");
-    }
+            System.out.println("Ogłoszenie zostało dodane.");
+        }
 
     @Override
-    public void WyswietlOgloszenie() {
+    public void showAdd() {
         System.out.println("=== Wyświetl ogłoszenie ===");
         System.out.print("Podaj ID ogłoszenia: ");
         int carId = Input();
 
-        OgloszenieSamochod auto = findCarById(carId);
-        if (auto != null) {
-            System.out.println("ID: " + auto.getId());
-            System.out.println("Tytuł: " + auto.getTitle());
-            System.out.println("Tresc: " + auto.getTresc());
-            System.out.println("Cena: " + auto.getPrice());
-            System.out.println("Przebieg: " + auto.getPrzebieg());
-            System.out.println("Rok produkcji: " + auto.getRokProdukcji());
+        OgloszenieSamochod car = findCarById(carId);
+        if (car != null) {
+            System.out.println("ID: " + car.getId());
+            System.out.println("Tytuł: " + car.getTitle());
+            System.out.println("Tresc: " + car.getDescription());
+            System.out.println("Cena: " + car.getPrice());
+            System.out.println("Przebieg: " + car.getCarMileage());
+            System.out.println("Rok produkcji: " + car.getYearOfProduction());
         } else {
             System.out.println("Nie znaleziono ogłoszenia.");
         }
     }
 
     @Override
-    public void EdytujOgloszenie() {
+    public void editAdd() {
         System.out.println("=== Edytuj ogłoszenia ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int samochodID = Input();
+        int carID = Input();
 
-        OgloszenieSamochod samochod = findCarById(samochodID);
-        if (samochod != null) {
+        OgloszenieSamochod car = findCarById(carID);
+        if (car != null) {
             System.out.print("Wpisz nowy tytuł: ");
-            samochod.setTitle(InputS());
+            car.setTitle(InputS());
 
             System.out.print("Wpisz nową treść: ");
-            samochod.setTresc(InputS());
+            car.setDescription(InputS());
 
             System.out.print("Podaj nową cene: ");
-            samochod.setPrice(Input());
+            car.setPrice(Input());
 
             System.out.print("Podaj nowy przebieg: ");
-            samochod.setPrzebieg(Input());
+            car.setCarMileage(Input());
 
             System.out.print("Podaj nowy rok produkcji: ");
-            samochod.setRokProdukcji(Input());
+            car.setYearOfProduction(Input());
 
             System.out.println("Ogłoszenie zostało zaaktualizowane.");
         } else {
@@ -81,14 +86,14 @@ public class MenuSamochod extends Menu {
     }
 
     @Override
-    public void UsunOgloszenie() {
+    public void deleteAdd() {
         System.out.println("=== Usuń ogłoszenie ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int bookId = Input();
+        int carID = Input();
 
-        OgloszenieSamochod samochod = findCarById(bookId);
-        if (samochod != null) {
-            samochodList.remove(samochod);
+        OgloszenieSamochod car = findCarById(carID);
+        if (car != null) {
+            carList.remove(car);
             System.out.println("Ogłoszenie zostało usunięte.");
         } else {
             System.out.println("Nie znaleziono ogłoszenia.");
@@ -96,31 +101,31 @@ public class MenuSamochod extends Menu {
     }
 
     @Override
-    public void WyswietlWszystkieOgloszenia() {
+    public void showAllAds() {
         System.out.println("=== Wyświetl ogłoszenie ===");
         System.out.println("Lista ogłoszen ");
         System.out.println("-----------------------");
 
-        for (OgloszenieSamochod auto : samochodList) {
-            System.out.println("ID: " + auto.getId());
-            System.out.println("Tytuł: " + auto.getTitle());
-            System.out.println("Tresc: " + auto.getTresc());
-            System.out.println("Cena: " + auto.getPrice());
-            System.out.println("Przebieg: " + auto.getPrzebieg());
-            System.out.println("Rok produkcji : " + auto.getRokProdukcji());
+        for (OgloszenieSamochod car : carList) {
+            System.out.println("ID: " + car.getId());
+            System.out.println("Tytuł: " + car.getTitle());
+            System.out.println("Tresc: " + car.getDescription());
+            System.out.println("Cena: " + car.getPrice());
+            System.out.println("Przebieg: " + car.getCarMileage());
+            System.out.println("Rok produkcji : " + car.getYearOfProduction());
             System.out.println("-----------------------");
         }
     }
 
     @Override
-    public void ZakonczOgloszenia() {
-        ZarzadzajBazaDanych.zapiszSamochodOgloszenia(samochodList);
+    public void exitTable() {
+        ZarzadzajBazaDanych.saveCarsTable(carList);
     }
 
     private OgloszenieSamochod findCarById(int id) {
-        for (OgloszenieSamochod samochod : samochodList) {
-            if (samochod.getId() == id) {
-                return samochod;
+        for (OgloszenieSamochod car : carList) {
+            if (car.getId() == id) {
+                return car;
             }
         }
         return null;

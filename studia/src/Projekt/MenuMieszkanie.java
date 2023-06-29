@@ -4,75 +4,92 @@ import java.util.List;
 
 public class MenuMieszkanie extends Menu {
 
-    private List<OgloszenieMieszkanie> mieszkanieList = ZarzadzajBazaDanych.odczytajMieszkanieOgloszenia();
+    private List<OgloszenieMieszkanie> houseList = ZarzadzajBazaDanych.readHouseTable();
 
+    boolean isValid = false;
+    int num = 0;
+    String choice;
     @Override
-    public void DodajOgloszenie() {
+    public void addAdd() {
         System.out.println("=== Dodaj ogłoszenie ===");
-        OgloszenieMieszkanie mieszkanie = new OgloszenieMieszkanie();
+        OgloszenieMieszkanie house = new OgloszenieMieszkanie();
         System.out.print("Wpisz tytuł: ");
-        mieszkanie.setTitle(InputS());
+        house.setTitle(InputS());
 
         System.out.print("Wpisz treść: ");
-        mieszkanie.setTresc(InputS());
+        house.setDescription(InputS());
 
-        System.out.print("Podaj cene: ");
-        mieszkanie.setPrice(Input());
+        do {
+            System.out.print("Podaj cene: ");
+            choice = InputS();
+            try {
+                num = Integer.parseInt(choice);
+                isValid = true;
+                house.setPrice(num);
+            }catch(NumberFormatException e)
+            {
+                System.out.println("Podano niewłaściwy typ");
+            }
+        }while(house.getPrice()<=0 || isValid == false);
 
-        System.out.print("Podaj wielkosc: ");
-        mieszkanie.setWielkosc(Input());
+        do {
+            System.out.print("Podaj wielkosc: ");
+            house.setSurface(Input());
+        }while(house.getSurface()<=0);
 
-        System.out.print("Podaj pietro: ");
-        mieszkanie.setPietro(Input());
+        do {
+            System.out.print("Podaj pietro: ");
+            house.setFloorNumber(Input());
+        }while(house.getFloorNumber()<0);
 
-        mieszkanie.setId(mieszkanieList.size() + 1);
+        house.setId(houseList.size() + 1);
 
-        mieszkanieList.add(mieszkanie);
+        houseList.add(house);
 
         System.out.println("Ogłoszenie zostało dodane.");
     }
 
     @Override
-    public void WyswietlOgloszenie() {
+    public void showAdd() {
         System.out.println("=== Wyświetl ogłoszenie ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int mieszkanieID = Input();
+        int houseID = Input();
 
-        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
-        if (mieszkanie != null) {
-            System.out.println("ID: " + mieszkanie.getId());
-            System.out.println("Tytuł: " + mieszkanie.getTitle());
-            System.out.println("Tresc: " + mieszkanie.getTresc());
-            System.out.println("Cena: " + mieszkanie.getPrice());
-            System.out.println("Pietro: " + mieszkanie.getPietro());
-            System.out.println("Wielkosc[m^2]: " + mieszkanie.getWielkosc());
+        OgloszenieMieszkanie house = findHouseById(houseID);
+        if (house != null) {
+            System.out.println("ID: " + house.getId());
+            System.out.println("Tytuł: " + house.getTitle());
+            System.out.println("Tresc: " + house.getDescription());
+            System.out.println("Cena: " + house.getPrice());
+            System.out.println("Pietro: " + house.getFloorNumber());
+            System.out.println("Wielkosc[m^2]: " + house.getSurface());
         } else {
             System.out.println("Nie znaleziono ogłoszenia.");
         }
     }
 
     @Override
-    public void EdytujOgloszenie() {
+    public void editAdd() {
         System.out.println("=== Edytuj ogłoszenia ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int mieszkanieID = Input();
+        int houseID = Input();
 
-        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
-        if (mieszkanie != null) {
+        OgloszenieMieszkanie house = findHouseById(houseID);
+        if (house != null) {
             System.out.print("Wpisz nowy tytuł: ");
-            mieszkanie.setTitle(InputS());
+            house.setTitle(InputS());
 
             System.out.print("Wpisz nową treść: ");
-            mieszkanie.setTresc(InputS());
+            house.setDescription(InputS());
 
             System.out.print("Podaj nową cene: ");
-            mieszkanie.setPrice(Input());
+            house.setPrice(Input());
 
             System.out.print("Podaj nowe pietro: ");
-            mieszkanie.setPietro(Input());
+            house.setFloorNumber(Input());
 
             System.out.print("Podaj nową wielkosc: ");
-            mieszkanie.setWielkosc(Input());
+            house.setSurface(Input());
 
             System.out.println("Ogłoszenie zostało zaaktualizowane.");
         } else {
@@ -81,14 +98,14 @@ public class MenuMieszkanie extends Menu {
     }
 
     @Override
-    public void UsunOgloszenie() {
+    public void deleteAdd() {
         System.out.println("=== Usuń ogłoszenie ===");
         System.out.print("Podaj ID ogłoszenia: ");
-        int mieszkanieID = Input();
+        int houseID = Input();
 
-        OgloszenieMieszkanie mieszkanie = findMieszkanieById(mieszkanieID);
-        if (mieszkanie != null) {
-            mieszkanieList.remove(mieszkanie);
+        OgloszenieMieszkanie house = findHouseById(houseID);
+        if (house != null) {
+            houseList.remove(house);
             System.out.println("Ogłoszenie zostało usunięte.");
         } else {
             System.out.println("Nie znaleziono ogłoszenia.");
@@ -96,31 +113,31 @@ public class MenuMieszkanie extends Menu {
     }
 
     @Override
-    public void WyswietlWszystkieOgloszenia() {
+    public void showAllAds() {
         System.out.println("=== Wyświetl ogłoszenie ===");
         System.out.println("Lista ogłoszen ");
         System.out.println("-----------------------");
 
-        for (OgloszenieMieszkanie mieszkanie : mieszkanieList) {
-            System.out.println("ID: " + mieszkanie.getId());
-            System.out.println("Tytuł: " + mieszkanie.getTitle());
-            System.out.println("Tresc: " + mieszkanie.getTresc());
-            System.out.println("Cena: " + mieszkanie.getPrice());
-            System.out.println("Pietro: " + mieszkanie.getPietro());
-            System.out.println("Wielkosc[m^2] : " + mieszkanie.getWielkosc());
+        for (OgloszenieMieszkanie house : houseList) {
+            System.out.println("ID: " + house.getId());
+            System.out.println("Tytuł: " + house.getTitle());
+            System.out.println("Tresc: " + house.getDescription());
+            System.out.println("Cena: " + house.getPrice());
+            System.out.println("Pietro: " + house.getFloorNumber());
+            System.out.println("Wielkosc[m^2] : " + house.getSurface());
             System.out.println("-----------------------");
         }
     }
 
     @Override
-    public void ZakonczOgloszenia() {
-        ZarzadzajBazaDanych.zapiszMieszkanieOgloszenia(mieszkanieList);
+    public void exitTable() {
+        ZarzadzajBazaDanych.saveHouseTable(houseList);
     }
 
-    private OgloszenieMieszkanie findMieszkanieById(int id) {
-        for (OgloszenieMieszkanie mieszkanie : mieszkanieList) {
-            if (mieszkanie.getId() == id) {
-                return mieszkanie;
+    private OgloszenieMieszkanie findHouseById(int id) {
+        for (OgloszenieMieszkanie house : houseList) {
+            if (house.getId() == id) {
+                return house;
             }
         }
         return null;
