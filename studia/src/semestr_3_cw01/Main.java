@@ -8,7 +8,8 @@ public class Main {
             student.menu();
         }
         catch(Exception e) {
-            System.out.println(e.getMessage()+"\n"+e.getStackTrace().toString());
+            System.out.println(e.getMessage()+"\n");
+            e.printStackTrace();
         };
     }
 }

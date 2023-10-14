@@ -23,9 +23,9 @@ public class Studenci {
 
             switch (a){
                 case 1 -> {
-                    //throw new RuntimeException("test");
-                    addStudent();
-                    break;
+                    throw new RuntimeException("test");
+                    //addStudent();
+                    //break;
                 }
 
                 case 2 -> {
@@ -117,6 +117,7 @@ public class Studenci {
     public boolean removeStudent(String itemToRemove, String itemToRemove2){
 
         boolean removed = false;
+
         for(int j = 0; j < list.size(); j++){
             if(list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)){
                 list.remove(j);
