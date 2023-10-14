@@ -2,6 +2,7 @@ package semestr_3_cw01;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.lang.Exception;
 
 public class Studenci {
     ArrayList<Student> list = new ArrayList<>();
@@ -22,6 +23,7 @@ public class Studenci {
 
             switch (a){
                 case 1 -> {
+                    //throw new RuntimeException("test");
                     addStudent();
                     break;
                 }
@@ -33,21 +35,30 @@ public class Studenci {
 
                     int choice = inputInt();
 
-                    if(choice == 1) {
+                    try {
+                        if (choice == 1) {
 
-                        System.out.print("Podaj imie ucznia do usuniecia: ");
-                        String nameToDelete = inputString();
+                            System.out.print("Podaj imie ucznia do usuniecia: ");
+                            String nameToDelete = inputString();
 
-                        System.out.print("Podaj nazwisko ucznia do usuniecia: ");
-                        String scndNameToDelete = inputString();
+                            System.out.print("Podaj nazwisko ucznia do usuniecia: ");
+                            String scndNameToDelete = inputString();
 
-                        removeStudent(nameToDelete, scndNameToDelete);
+                            if (!removeStudent(nameToDelete, scndNameToDelete)) {
+                                DeleteStudentException dse = new DeleteStudentException("Nie znaleziono studenta o danym imieniu i nazwisku");
+                                throw dse;
+                            }
 
-                    }else {
-                        System.out.println("Podaj numer albumu ucznia do usuniecia");
-                        int albumNumberToDelete = inputInt();
+                        } else {
+                            System.out.println("Podaj numer albumu ucznia do usuniecia");
+                            int albumNumberToDelete = inputInt();
 
-                        removeStudent(albumNumberToDelete);
+                           if(!removeStudent(albumNumberToDelete)){
+                               throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
+                           }
+                        }
+                    }catch (DeleteStudentException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 }
@@ -103,28 +114,38 @@ public class Studenci {
             list.add(new Student(name, scndName, albumNumber));
     }
 
-    public void removeStudent(String itemToRemove, String itemToRemove2){
+    public boolean removeStudent(String itemToRemove, String itemToRemove2){
 
+        boolean removed = false;
         for(int j = 0; j < list.size(); j++){
             if(list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)){
                 list.remove(j);
+                removed = true;
             }
         }
-            //TODO doadac obslugiwanie wyjatkow
+
         System.out.println("Uczeń został usunięty");
+
         showStudents();
+
+        return removed;
     }
 
-    public void removeStudent(int itemToRemove){
+    public boolean removeStudent(int itemToRemove){
+
+        boolean removed = false;
 
         for(int j = 0; j < list.size(); j++){
             if(list.get(j).getAlbumNumber() == (itemToRemove)){
                 list.remove(j);
+                removed = true;
             }
         }
-        //TODO dodac obslugiwanie wyjatkow
+
         System.out.println("Uczeń został usunięty");
         showStudents();
+
+        return removed;
     }
 
     public void showStudentsByAlbumNumber(int itemToShow){
