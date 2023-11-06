@@ -31,6 +31,14 @@ public class Student {
         return albumNumber;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScndName(String scndName) {
+        this.scndName = scndName;
+    }
+
     @Override
     public String toString() {
         return  "imie='" + name + '\'' +

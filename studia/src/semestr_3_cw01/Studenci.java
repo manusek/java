@@ -1,12 +1,15 @@
 package semestr_3_cw01;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.lang.Exception;
 
 public class Studenci {
     ArrayList<Student> list = new ArrayList<>();
     Student student = new Student();
+
+
     public void menu(){
         while(true){
 
@@ -16,16 +19,13 @@ public class Studenci {
             System.out.println("Wyswietl studentów (3)");
             System.out.println("Wyswietl studenta po albumie (4)");
             System.out.println("Wyswietl studenta po albumie wiekszym niz podany (5)");
-            System.out.println("Zakończ (6)");
+            System.out.println("Edytuj studenta (6)");
+            System.out.println("Zakończ (7)");
             System.out.print("Jakie działanie chcesz wykonać: ");
 
-            int a = inputInt();
-
-            switch (a){
+            switch (checkInput()){
                 case 1 -> {
-                    throw new RuntimeException("test");
-                    //addStudent();
-                    //break;
+                    addStudent();
                 }
 
                 case 2 -> {
@@ -69,29 +69,55 @@ public class Studenci {
                 }
 
                 case 4 -> {
-                        System.out.println(" ");
-                        System.out.print("Podaj numer albumu:  ");
+                        try {
+                            System.out.println(" ");
+                            System.out.print("Podaj numer albumu:  ");
 
-                        int number = inputInt();
+                            int number = inputInt();
 
-                        showStudentsByAlbumNumber(number);
+                            if (!showStudentsByAlbumNumber(number)) ;
+                                throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
+                        }catch (NumberFormatException e){
+                            System.out.println(e.getMessage());
+                        }
 
                         break;
                 }
 
                 case 5 -> {
-                    System.out.println(" ");
-                    System.out.print("Podaj numer albumu: ");
+                    try {
+                        System.out.println(" ");
+                        System.out.print("Podaj numer albumu: ");
 
-                    int number = inputInt();
+                        int number = inputInt();
 
-                    showStudentsByAlbumNumber2(number);
+                        if(!showStudentsByAlbumNumber2(number))
+                            throw new DeleteStudentException("Nie znaleziono studentow o podanym numerze albumu");
+                    }
+                    catch(DeleteStudentException e){
+                        System.out.println(e.getMessage());
+                    }
 
                     break;
                 }
 
                 case 6 -> {
+                    try {
+                        System.out.println(" ");
+                        System.out.println("Podaj numer albumu studenta którego chcesz edytowac: ");
+                        int itemToEdit = inputInt();
+                        if(!editStudent(itemToEdit));
+                        throw new DeleteStudentException("Nie znaleziono studenta");
+                    }catch (DeleteStudentException e){
+                        System.out.println(e.getMessage());
+                    }
+
+                    break;
+                }
+
+                case 7 -> {
                     close();
+
                     break;
                 }
             }
@@ -149,11 +175,14 @@ public class Studenci {
         return removed;
     }
 
-    public void showStudentsByAlbumNumber(int itemToShow){
+    public boolean showStudentsByAlbumNumber(int itemToShow){
+        boolean show = false;
+
         for(int i = 0; i < list.size(); i++){
             if(list.get(i).getAlbumNumber() == itemToShow)
                 System.out.println("Imie: " + list.get(i).getName() +", " + "Nazwisko: " + list.get(i).getScndName());
         }
+        return show;
     }
 
     void showStudents(){
@@ -163,7 +192,9 @@ public class Studenci {
         }
     }
 
-    public void showStudentsByAlbumNumber2(int itemToShow){
+    public boolean showStudentsByAlbumNumber2(int itemToShow){
+
+        boolean show2 = false;
         ArrayList<Student> list2 = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++) {
@@ -175,6 +206,25 @@ public class Studenci {
             for(int j = 0; j < list2.size(); j++){
                 System.out.println(list2.get(j));
             }
+            return show2;
+    }
+
+    public boolean editStudent(int itemToEdit){
+        boolean edited = false;
+
+        System.out.println("Sdfsd");
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i).getAlbumNumber() == (itemToEdit)){
+                System.out.print("Podaj nowe imie: ");
+                list.get(i).setName(inputString());
+
+                System.out.print("Podaj nowe nazwisko: ");
+                list.get(i).setScndName(inputString());
+
+                edited = true;
+            }
+        }
+        return edited;
     }
 
     public String inputString(){
@@ -190,6 +240,24 @@ public class Studenci {
     public static void close(){
         System.out.println("Dziekujemy :)");
         System.exit(0);
+    }
+
+    public int checkInput(){
+        boolean checkInput = false;
+            int number = 0;
+            String choice2;
+
+            while(checkInput == false) {
+                choice2 = inputString();
+                try{
+                    number = Integer.parseInt(choice2);
+                    checkInput = true;
+                } catch(NumberFormatException e)
+                {
+                    System.out.print("Podano niewłaściwy typ! ");
+                }
+            }
+            return number;
     }
 
 }
