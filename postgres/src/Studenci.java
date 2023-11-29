@@ -4,24 +4,25 @@ import java.util.Scanner;
 
 public class Studenci {
 
-    String jdbcUrl = "jdbc:postgresql://localhost:5432/javaTest";
-    String username = "postgres";
-    String password = "admin";
+    static String jdbcUrl = "jdbc:postgresql://172.18.1.233:5432/javaTest";
 
+    //static String jdbcUrl = "jdbc:postgresql://127.0.0.1:5432/javaTest";
+    static String username = "postgres";
+    static String password = "admin";
 
-
-
-
+    private static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(jdbcUrl, username, password);
+    }
 
     ArrayList<Student> list = new ArrayList<>();
     Student student = new Student();
-
+        //TODO przywrocic uzywanie studenta i ogarnac case
     public Studenci() throws SQLException {
     }
 
 
     public void menu() throws SQLException {
-        while(true){
+        while (true) {
 
             System.out.println(" ");
             System.out.println("Dodaj studenta (1)");
@@ -33,7 +34,7 @@ public class Studenci {
             System.out.println("Zakończ (7)");
             System.out.print("Jakie działanie chcesz wykonać: ");
 
-            switch (checkInput()){
+            switch (checkInput()) {
                 case 1 -> {
                     addStudent();
                 }
@@ -63,35 +64,35 @@ public class Studenci {
                             System.out.println("Podaj numer albumu ucznia do usuniecia");
                             int albumNumberToDelete = inputInt();
 
-                           if(!removeStudent(albumNumberToDelete)){
-                               throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
-                           }
+                            if (!removeStudent(albumNumberToDelete)) {
+                                throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
+                            }
                         }
-                    }catch (DeleteStudentException e) {
+                    } catch (DeleteStudentException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 }
 
                 case 3 -> {
-                        showStudents();
+                    showStudents();
                     break;
                 }
 
                 case 4 -> {
-                        try {
-                            System.out.println(" ");
-                            System.out.print("Podaj numer albumu:  ");
+                    try {
+                        System.out.println(" ");
+                        System.out.print("Podaj numer albumu:  ");
 
-                            int number = inputInt();
+                        int number = inputInt();
 
-                            if (!showStudentsByAlbumNumber(number)) ;
-                                throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
-                        }catch (NumberFormatException e){
-                            System.out.println(e.getMessage());
-                        }
+                        if (!showStudentsByAlbumNumber(number)) ;
+                        throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
+                    } catch (NumberFormatException e) {
+                        System.out.println(e.getMessage());
+                    }
 
-                        break;
+                    break;
                 }
 
                 case 5 -> {
@@ -101,10 +102,9 @@ public class Studenci {
 
                         int number = inputInt();
 
-                        if(!showStudentsByAlbumNumber2(number))
+                        if (!showStudentsByAlbumNumber2(number))
                             throw new DeleteStudentException("Nie znaleziono studentow o podanym numerze albumu");
-                    }
-                    catch(DeleteStudentException e){
+                    } catch (DeleteStudentException e) {
                         System.out.println(e.getMessage());
                     }
 
@@ -112,16 +112,11 @@ public class Studenci {
                 }
 
                 case 6 -> {
-                    try {
-                        System.out.println(" ");
-                        System.out.println("Podaj numer albumu studenta którego chcesz edytowac: ");
-                        int itemToEdit = inputInt();
-                        if(!editStudent(itemToEdit));
-                        throw new DeleteStudentException("Nie znaleziono studenta");
-                    }catch (DeleteStudentException e){
-                        System.out.println(e.getMessage());
-                    }
-
+                    System.out.println(" ");
+                    System.out.println("Podaj numer albumu studenta którego chcesz edytowac: ");
+                    int itemToEdit = inputInt();
+                    editStudent(itemToEdit);
+                    //ctrl alt l
                     break;
                 }
 
@@ -136,46 +131,61 @@ public class Studenci {
     }
 
     public void addStudent() throws SQLException {
-            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            Statement statement = connection.createStatement();
+        System.out.println("=====>Dodawanie uczniów<====");
 
-            System.out.println("=====>Dodawanie uczniów<====");
+        System.out.println("Podaj imie: ");
+        String name = inputString();
 
-            System.out.println("Podaj imie: ");
-            String name = inputString();
+        System.out.print("Podaj nazwisko: ");
+        String scndName = inputString();
 
-            System.out.print("Podaj nazwisko: ");
-            String scndName = inputString();
+        System.out.print("Podaj adres albumu: ");
+        int albumNumber = inputInt();
 
-            System.out.print("Podaj adres albumu: ");
-            int albumNumber = inputInt();
+        try (Connection connection = getConnection()) {
+            String sqlQuery = "INSERT INTO students (name, secondname, album) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            {
 
-            list.add(new Student(name, scndName, albumNumber));
+                statement.setString(1, name);
+                statement.setString(2, scndName);
+                statement.setInt(3, albumNumber);
+                statement.executeUpdate();
+                System.out.println("Record created successfully");
 
-            String sqlQuery = "INSERT INTO students(name, secondname, album) VALUES(?, ?, ?)";
-
-
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-
-            statement.close();
-            resultSet.close();
-            connection.close();
+                statement.close();
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean removeStudent(String itemToRemove, String itemToRemove2) throws SQLException {
 
         boolean removed = false;
 
-        for(int j = 0; j < list.size(); j++){
-            if(list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)){
-                list.remove(j);
-                removed = true;
-            }
+//        for(int j = 0; j < list.size(); j++){
+//            if(list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)){
+//                list.remove(j);
+//                removed = true;
+//            }
+//        }
+        try (Connection connection = getConnection()) {
+            String sqlQuery = "DELETE FROM students WHERE name = ? AND secondname = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+
+            statement.setString(1, itemToRemove);
+            statement.setString(2, itemToRemove2);
+            statement.executeUpdate();
+
+            System.out.println("Student został usunięty");
+
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        System.out.println("Uczeń został usunięty");
-
-        showStudents();
 
         return removed;
     }
@@ -183,26 +193,33 @@ public class Studenci {
     public boolean removeStudent(int itemToRemove) throws SQLException {
 
         boolean removed = false;
+        try (Connection connection = getConnection()) {
+            String sqlQuery = "DELETE FROM students WHERE album = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
 
-        for(int j = 0; j < list.size(); j++){
-            if(list.get(j).getAlbumNumber() == (itemToRemove)){
-                list.remove(j);
-                removed = true;
-            }
+            statement.setInt(1, itemToRemove);
+            statement.executeUpdate();
+
+            System.out.println("Student został usunięty");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        System.out.println("Uczeń został usunięty");
-        showStudents();
-
+//        for(int j = 0; j < list.size(); j++){
+//            if(list.get(j).getAlbumNumber() == (itemToRemove)){
+//                list.remove(j);
+//                removed = true;
+//            }
+//        }
         return removed;
     }
 
-    public boolean showStudentsByAlbumNumber(int itemToShow){
+    public boolean showStudentsByAlbumNumber(int itemToShow) {
         boolean show = false;
 
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getAlbumNumber() == itemToShow)
-                System.out.println("Imie: " + list.get(i).getName() +", " + "Nazwisko: " + list.get(i).getScndName());
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getAlbumNumber() == itemToShow)
+                System.out.println("Imie: " + list.get(i).getName() + ", " + "Nazwisko: " + list.get(i).getScndName());
         }
         return show;
     }
@@ -230,75 +247,94 @@ public class Studenci {
         resultSet.close();
         statement.close();
         connection.close();
-
     }
 
-    public boolean showStudentsByAlbumNumber2(int itemToShow){
+    public boolean showStudentsByAlbumNumber2(int itemToShow) {
 
         boolean show2 = false;
         ArrayList<Student> list2 = new ArrayList<>();
 
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getAlbumNumber() > itemToShow) {
                 list2.add(list.get(i));
             }
         }
 
-            for(int j = 0; j < list2.size(); j++){
-                System.out.println(list2.get(j));
-            }
-            return show2;
-    }
-
-    public boolean editStudent(int itemToEdit){
-        boolean edited = false;
-
-        System.out.println("Sdfsd");
-        for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).getAlbumNumber() == (itemToEdit)){
-                System.out.print("Podaj nowe imie: ");
-                list.get(i).setName(inputString());
-
-                System.out.print("Podaj nowe nazwisko: ");
-                list.get(i).setScndName(inputString());
-
-                edited = true;
-            }
+        for (int j = 0; j < list2.size(); j++) {
+            System.out.println(list2.get(j));
         }
-        return edited;
+        return show2;
     }
 
-    public String inputString(){
+    public void editStudent(int itemToEdit) throws SQLException {
+//        System.out.println("Sdfsd");
+//        for(int i = 0; i < list.size(); i++) {
+//            if(list.get(i).getAlbumNumber() == (itemToEdit)){
+//                System.out.print("Podaj nowe imie: ");
+//                list.get(i).setName(inputString());
+//
+//                System.out.print("Podaj nowe nazwisko: ");
+//                list.get(i).setScndName(inputString());
+//
+//                edited = true;
+//            }
+//        }
+        boolean edited = false;
+        try (Connection connection = getConnection()) {
+            String sqlQuery = "UPDATE students SET name = ?, secondname = ? WHERE album = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+
+            System.out.print("Podaj nowe imie: ");
+            String name = inputString();
+            statement.setString(1, name);
+
+            System.out.print("Podaj nowe nazwisko: ");
+            String scndName = inputString();
+            statement.setString(2, scndName);
+
+            statement.setInt(3, itemToEdit);
+
+            if (statement.executeUpdate() == 0) {
+                throw new SQLException("Nie znaleziono studenta");
+            }
+
+            //edited = statement.executeUpdate() >0 ? true: false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String inputString() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
-    public int inputInt(){
+    public int inputInt() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
 
-    public static void close(){
+    public static void close() {
         System.out.println("Dziekujemy :)");
         System.exit(0);
     }
 
-    public int checkInput(){
+    public int checkInput() {
         boolean checkInput = false;
-            int number = 0;
-            String choice2;
+        int number = 0;
+        String choice2;
 
-            while(checkInput == false) {
-                choice2 = inputString();
-                try{
-                    number = Integer.parseInt(choice2);
-                    checkInput = true;
-                } catch(NumberFormatException e)
-                {
-                    System.out.print("Podano niewłaściwy typ! ");
-                }
+        while (checkInput == false) {
+            choice2 = inputString();
+            try {
+                number = Integer.parseInt(choice2);
+                checkInput = true;
+            } catch (NumberFormatException e) {
+                System.out.print("Podano niewłaściwy typ! ");
             }
-            return number;
+        }
+        return number;
     }
 
 }
