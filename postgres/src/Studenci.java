@@ -9,10 +9,6 @@ public class Studenci {
     String password = "admin";
 
 
-
-
-
-
     ArrayList<Student> list = new ArrayList<>();
     Student student = new Student();
 
@@ -21,7 +17,7 @@ public class Studenci {
 
 
     public void menu() throws SQLException {
-        while(true){
+        while (true) {
 
             System.out.println(" ");
             System.out.println("Dodaj studenta (1)");
@@ -33,7 +29,7 @@ public class Studenci {
             System.out.println("Zakończ (7)");
             System.out.print("Jakie działanie chcesz wykonać: ");
 
-            switch (checkInput()){
+            switch (checkInput()) {
                 case 1 -> {
                     addStudent();
                 }
@@ -63,35 +59,35 @@ public class Studenci {
                             System.out.println("Podaj numer albumu ucznia do usuniecia");
                             int albumNumberToDelete = inputInt();
 
-                           if(!removeStudent(albumNumberToDelete)){
-                               throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
-                           }
+                            if (!removeStudent(albumNumberToDelete)) {
+                                throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
+                            }
                         }
-                    }catch (DeleteStudentException e) {
+                    } catch (DeleteStudentException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 }
 
                 case 3 -> {
-                        showStudents();
+                    showStudents();
                     break;
                 }
 
                 case 4 -> {
-                        try {
-                            System.out.println(" ");
-                            System.out.print("Podaj numer albumu:  ");
+                    try {
+                        System.out.println(" ");
+                        System.out.print("Podaj numer albumu:  ");
 
-                            int number = inputInt();
+                        int number = inputInt();
 
-                            if (!showStudentsByAlbumNumber(number)) ;
-                                throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
-                        }catch (NumberFormatException e){
-                            System.out.println(e.getMessage());
-                        }
+                        if (!showStudentsByAlbumNumber(number)) ;
+                        throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
+                    } catch (NumberFormatException e) {
+                        System.out.println(e.getMessage());
+                    }
 
-                        break;
+                    break;
                 }
 
                 case 5 -> {
@@ -101,10 +97,9 @@ public class Studenci {
 
                         int number = inputInt();
 
-                        if(!showStudentsByAlbumNumber2(number))
+                        if (!showStudentsByAlbumNumber2(number))
                             throw new DeleteStudentException("Nie znaleziono studentow o podanym numerze albumu");
-                    }
-                    catch(DeleteStudentException e){
+                    } catch (DeleteStudentException e) {
                         System.out.println(e.getMessage());
                     }
 
@@ -116,9 +111,9 @@ public class Studenci {
                         System.out.println(" ");
                         System.out.println("Podaj numer albumu studenta którego chcesz edytowac: ");
                         int itemToEdit = inputInt();
-                        if(!editStudent(itemToEdit));
+                        if (!editStudent(itemToEdit)) ;
                         throw new DeleteStudentException("Nie znaleziono studenta");
-                    }catch (DeleteStudentException e){
+                    } catch (DeleteStudentException e) {
                         System.out.println(e.getMessage());
                     }
 
@@ -136,38 +131,38 @@ public class Studenci {
     }
 
     public void addStudent() throws SQLException {
-            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            Statement statement = connection.createStatement();
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        Statement statement = connection.createStatement();
 
-            System.out.println("=====>Dodawanie uczniów<====");
+        System.out.println("=====>Dodawanie uczniów<====");
 
-            System.out.println("Podaj imie: ");
-            String name = inputString();
+        System.out.println("Podaj imie: ");
+        String name = inputString();
 
-            System.out.print("Podaj nazwisko: ");
-            String scndName = inputString();
+        System.out.print("Podaj nazwisko: ");
+        String scndName = inputString();
 
-            System.out.print("Podaj adres albumu: ");
-            int albumNumber = inputInt();
+        System.out.print("Podaj adres albumu: ");
+        int albumNumber = inputInt();
 
-            list.add(new Student(name, scndName, albumNumber));
+        list.add(new Student(name, scndName, albumNumber));
 
-            String sqlQuery = "INSERT INTO students(name, secondname, album) VALUES(?, ?, ?)";
+        String sqlQuery = "INSERT INTO students(name, secondname, album) VALUES(?, ?, ?)";
 
 
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
+        ResultSet resultSet = statement.executeQuery(sqlQuery);
 
-            statement.close();
-            resultSet.close();
-            connection.close();
+        statement.close();
+        resultSet.close();
+        connection.close();
     }
 
     public boolean removeStudent(String itemToRemove, String itemToRemove2) throws SQLException {
 
         boolean removed = false;
 
-        for(int j = 0; j < list.size(); j++){
-            if(list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)){
+        for (int j = 0; j < list.size(); j++) {
+            if (list.get(j).getName().equals(itemToRemove) && list.get(j).getScndName().equals(itemToRemove2)) {
                 list.remove(j);
                 removed = true;
             }
@@ -184,8 +179,8 @@ public class Studenci {
 
         boolean removed = false;
 
-        for(int j = 0; j < list.size(); j++){
-            if(list.get(j).getAlbumNumber() == (itemToRemove)){
+        for (int j = 0; j < list.size(); j++) {
+            if (list.get(j).getAlbumNumber() == (itemToRemove)) {
                 list.remove(j);
                 removed = true;
             }
@@ -197,12 +192,12 @@ public class Studenci {
         return removed;
     }
 
-    public boolean showStudentsByAlbumNumber(int itemToShow){
+    public boolean showStudentsByAlbumNumber(int itemToShow) {
         boolean show = false;
 
-        for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getAlbumNumber() == itemToShow)
-                System.out.println("Imie: " + list.get(i).getName() +", " + "Nazwisko: " + list.get(i).getScndName());
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getAlbumNumber() == itemToShow)
+                System.out.println("Imie: " + list.get(i).getName() + ", " + "Nazwisko: " + list.get(i).getScndName());
         }
         return show;
     }
@@ -233,29 +228,29 @@ public class Studenci {
 
     }
 
-    public boolean showStudentsByAlbumNumber2(int itemToShow){
+    public boolean showStudentsByAlbumNumber2(int itemToShow) {
 
         boolean show2 = false;
         ArrayList<Student> list2 = new ArrayList<>();
 
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getAlbumNumber() > itemToShow) {
                 list2.add(list.get(i));
             }
         }
 
-            for(int j = 0; j < list2.size(); j++){
-                System.out.println(list2.get(j));
-            }
-            return show2;
+        for (int j = 0; j < list2.size(); j++) {
+            System.out.println(list2.get(j));
+        }
+        return show2;
     }
 
-    public boolean editStudent(int itemToEdit){
+    public boolean editStudent(int itemToEdit) {
         boolean edited = false;
 
         System.out.println("Sdfsd");
-        for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).getAlbumNumber() == (itemToEdit)){
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getAlbumNumber() == (itemToEdit)) {
                 System.out.print("Podaj nowe imie: ");
                 list.get(i).setName(inputString());
 
@@ -268,37 +263,36 @@ public class Studenci {
         return edited;
     }
 
-    public String inputString(){
+    public String inputString() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
-    public int inputInt(){
+    public int inputInt() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
 
-    public static void close(){
+    public static void close() {
         System.out.println("Dziekujemy :)");
         System.exit(0);
     }
 
-    public int checkInput(){
+    public int checkInput() {
         boolean checkInput = false;
-            int number = 0;
-            String choice2;
+        int number = 0;
+        String choice2;
 
-            while(checkInput == false) {
-                choice2 = inputString();
-                try{
-                    number = Integer.parseInt(choice2);
-                    checkInput = true;
-                } catch(NumberFormatException e)
-                {
-                    System.out.print("Podano niewłaściwy typ! ");
-                }
+        while (checkInput == false) {
+            choice2 = inputString();
+            try {
+                number = Integer.parseInt(choice2);
+                checkInput = true;
+            } catch (NumberFormatException e) {
+                System.out.print("Podano niewłaściwy typ! ");
             }
-            return number;
+        }
+        return number;
     }
 
 }
