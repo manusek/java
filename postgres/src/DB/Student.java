@@ -39,6 +39,10 @@ public class Student {
         this.scndName = scndName;
     }
 
+    public void setAlbumNumber(long albumNumber) {
+        this.albumNumber = albumNumber;
+    }
+
     @Override
     public String toString() {
         return  "imie='" + name + '\'' +

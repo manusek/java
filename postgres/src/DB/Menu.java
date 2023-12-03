@@ -9,10 +9,12 @@ public class Menu {
     ArrayList<Student> list = new ArrayList<>();
     Student student = new Student();
 
-    DB_acces db = new DB_acces();
+    DB_acces db;
+    Adding adding;
 
-    //TODO przywrocic uzywanie studenta i ogarnac case
-    public Menu() throws SQLException {
+    public Menu(DB_acces db, Adding addStudent) throws SQLException {
+        this.db = db;
+        this.adding = addStudent;
     }
 
 
@@ -31,42 +33,21 @@ public class Menu {
 
             switch (checkInput()) {
                 case 1 -> {
-                    db.addStudent();
+                    db.addStudentDB(adding.addStudentLOCAL());
                 }
 
                 case 2 -> {
-
-                    System.out.println(" ");
                     System.out.println("Usuwanie po imieniu i nazwisku (1)\nUsuwanie po numerze albumu (2): ");
 
                     int choice = inputInt();
 
-                    try {
-                        if (choice == 1) {
-
-                            System.out.print("Podaj imie ucznia do usuniecia: ");
-                            String nameToDelete = inputString();
-
-                            System.out.print("Podaj nazwisko ucznia do usuniecia: ");
-                            String scndNameToDelete = inputString();
-
-                            if (!db.removeStudent(nameToDelete, scndNameToDelete)) {
-                                DeleteStudentException dse = new DeleteStudentException("Nie znaleziono studenta o danym imieniu i nazwisku");
-                                throw dse;
-                            }
-
-                        } else {
-                            System.out.println("Podaj numer albumu ucznia do usuniecia");
-                            int albumNumberToDelete = inputInt();
-
-                            if (!db.removeStudent(albumNumberToDelete)) {
-                                throw new DeleteStudentException("Nie znaleziono studenta o danym numerze albumu");
-                            }
-                        }
-                    } catch (DeleteStudentException e) {
-                        System.out.println(e.getMessage());
+                    if (choice == 1) {
+                        db.removeStudentName(adding.removeStudentNameLOCAL());
+                    } else {
+                        db.removeStudentID(adding.removeStudentIDLOCAL());
                     }
                 }
+
 
                 case 3 -> {
                     db.showStudents();
@@ -102,10 +83,7 @@ public class Menu {
                 }
 
                 case 6 -> {
-                    System.out.println(" ");
-                    System.out.println("Podaj numer albumu studenta którego chcesz edytowac: ");
-                    int itemToEdit = inputInt();
-                    db.editStudent(itemToEdit);
+                    db.editStudent(adding.editStudentLOCAL());
                 }
 
                 case 7 -> {

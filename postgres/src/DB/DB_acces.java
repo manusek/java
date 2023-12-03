@@ -2,11 +2,19 @@ package DB;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DB_acces {
 
+    private static DB_acces dbAcces;
+
     public DB_acces() {
+    }
+
+    public static DB_acces getInstance() {
+        if (dbAcces == null) {
+            dbAcces = new DB_acces();
+        }
+        return dbAcces;
     }
 
     static String jdbcUrl = "jdbc:postgresql://127.0.0.1:5432/javaTest";
@@ -22,72 +30,63 @@ public class DB_acces {
 
     //TODO przywrocic uzywanie studenta
 
-    public void addStudent() throws SQLException {
-        System.out.println("=====>Dodawanie uczniów<====");
-
-        System.out.println("Podaj imie: ");
-        String name = inputString();
-
-//        String name = student.setName(inputString());
-
-        //TODO zapytac czy tu mozna zrobic set name i potem dopiero wyslac zapytanie do bazy tak jak powyzej i jak uzyc tu listy z obiekatmi i czy jest sens
-        System.out.print("Podaj nazwisko: ");
-        String scndName = inputString();
-
-        System.out.print("Podaj adres albumu: ");
-        int albumNumber = inputInt();
-
+    public void addStudentDB(Student std) throws SQLException {
         try (Connection connection = getConnection()) {
             String sqlQuery = "INSERT INTO students (name, secondname, album) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             {
 
-                statement.setString(1, name);
-                statement.setString(2, scndName);
-                statement.setInt(3, albumNumber);
+                statement.setString(1, std.getName());
+                statement.setString(2, std.getScndName());
+                statement.setLong(3, std.getAlbumNumber());
                 statement.executeUpdate();
                 System.out.println("Record created successfully");
 
                 statement.close();
                 connection.close();
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean removeStudent(String itemToRemove, String itemToRemove2) throws SQLException {
-
-        boolean removed = false;
-
+    public void removeStudentName(Student std) throws SQLException {
 
         try (Connection connection = getConnection()) {
+
             String sqlQuery = "DELETE FROM students WHERE name = ? AND secondname = ?";
+
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
 
-            statement.setString(1, itemToRemove);
-            statement.setString(2, itemToRemove2);
-            statement.executeUpdate();
+            statement.setString(1, std.getName());
+            statement.setString(2, std.getScndName());
 
-            System.out.println("DB.Student został usunięty");
+            //statement.executeUpdate();
+            //TODO zapytac czemu program dziala bez statement.executeUpdate i czy to ma zwiazek ze jest on w ifie ponizej
+            //TODO bo inaczej wali bledem nawet jak wprowadzone dane sa prawidlowe
+            if (statement.executeUpdate() != 0){
+                System.out.println("Student został usunięty");
+            }else {
+                throw new SQLException("Nie znaleziono studenta");
+            }
 
             statement.close();
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return removed;
     }
 
-    public boolean removeStudent(int itemToRemove) throws SQLException {
-
+    public boolean removeStudentID(Student std2) throws SQLException {
         boolean removed = false;
+
         try (Connection connection = getConnection()) {
             String sqlQuery = "DELETE FROM students WHERE album = ?";
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
 
-            statement.setInt(1, itemToRemove);
+            statement.setLong(1, std2.getAlbumNumber());
             statement.executeUpdate();
 
             System.out.println("DB.Student został usunięty");
@@ -95,12 +94,7 @@ public class DB_acces {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        for(int j = 0; j < list.size(); j++){
-//            if(list.get(j).getAlbumNumber() == (itemToRemove)){
-//                list.remove(j);
-//                removed = true;
-//            }
-//        }
+
         return removed;
     }
 
@@ -156,53 +150,31 @@ public class DB_acces {
         return show2;
     }
 
-    public void editStudent(int itemToEdit) throws SQLException {
-//        System.out.println("Sdfsd");
-//        for(int i = 0; i < list.size(); i++) {
-//            if(list.get(i).getAlbumNumber() == (itemToEdit)){
-//                System.out.print("Podaj nowe imie: ");
-//                list.get(i).setName(inputString());
-//
-//                System.out.print("Podaj nowe nazwisko: ");
-//                list.get(i).setScndName(inputString());
-//
-//                edited = true;
-//            }
-//        }
-        boolean edited = false;
+    public void editStudent(Student std) throws SQLException {
+
         try (Connection connection = getConnection()) {
+
             String sqlQuery = "UPDATE students SET name = ?, secondname = ? WHERE album = ?";
+
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
 
-            System.out.print("Podaj nowe imie: ");
-            String name = inputString();
-            statement.setString(1, name);
+            statement.setString(1, std.getName());
+            statement.setString(2, std.getScndName());
+            statement.setLong(3, std.getAlbumNumber());
 
-            System.out.print("Podaj nowe nazwisko: ");
-            String scndName = inputString();
-            statement.setString(2, scndName);
-
-            statement.setInt(3, itemToEdit);
-
-            if (statement.executeUpdate() == 0) {
+            if (statement.executeUpdate() != 0) {
+                System.out.println("Student został edytowany");
+            }else {
                 throw new SQLException("Nie znaleziono studenta");
             }
+            statement.close();
+            connection.close();
 
             //edited = statement.executeUpdate() >0 ? true: false;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    public String inputString() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-    public int inputInt() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
-    }
-
 }
+
+
