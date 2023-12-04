@@ -1,5 +1,7 @@
 package DB;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -31,20 +33,24 @@ public class DB_acces {
     //TODO przywrocic uzywanie studenta
 
     public void addStudentDB(Student std) throws SQLException {
+
         try (Connection connection = getConnection()) {
+
             String sqlQuery = "INSERT INTO students (name, secondname, album) VALUES (?, ?, ?)";
+
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             {
 
                 statement.setString(1, std.getName());
                 statement.setString(2, std.getScndName());
                 statement.setLong(3, std.getAlbumNumber());
+
                 statement.executeUpdate();
+
                 System.out.println("Record created successfully");
 
                 statement.close();
                 connection.close();
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,9 +71,9 @@ public class DB_acces {
             //statement.executeUpdate();
             //TODO zapytac czemu program dziala bez statement.executeUpdate i czy to ma zwiazek ze jest on w ifie ponizej
             //TODO bo inaczej wali bledem nawet jak wprowadzone dane sa prawidlowe
-            if (statement.executeUpdate() != 0){
+            if (statement.executeUpdate() != 0) {
                 System.out.println("Student został usunięty");
-            }else {
+            } else {
                 throw new SQLException("Nie znaleziono studenta");
             }
 
@@ -79,23 +85,25 @@ public class DB_acces {
         }
     }
 
-    public boolean removeStudentID(Student std2) throws SQLException {
-        boolean removed = false;
+    public void removeStudentID(Student std2) throws SQLException {
 
         try (Connection connection = getConnection()) {
+
             String sqlQuery = "DELETE FROM students WHERE album = ?";
+
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
 
             statement.setLong(1, std2.getAlbumNumber());
-            statement.executeUpdate();
 
-            System.out.println("DB.Student został usunięty");
+            if (statement.executeUpdate() != 0) {
+                System.out.println("Student został usunięty");
+            } else {
+                throw new SQLException("Nie znaleziono studenta");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return removed;
     }
 
     public boolean showStudentsByAlbumNumber(int itemToShow) {
@@ -109,20 +117,22 @@ public class DB_acces {
     }
 
     void showStudents() throws SQLException {
-//        System.out.println(" ");
-//        for(int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
+
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+
         Statement statement = connection.createStatement();
+
         String sqlQuery = "SELECT * FROM students";
+
         ResultSet resultSet = statement.executeQuery(sqlQuery);
 
         while (resultSet.next()) {
-
             int id = resultSet.getInt("id");
+
             String name = resultSet.getString("name");
+
             String secondname = resultSet.getString("secondname");
+
             int album = resultSet.getInt("album");
 
             System.out.println("ID: " + id + ", Name: " + name + ", Second Name: " + secondname + ", Ablum number: " + album);
@@ -131,23 +141,6 @@ public class DB_acces {
         resultSet.close();
         statement.close();
         connection.close();
-    }
-
-    public boolean showStudentsByAlbumNumber2(int itemToShow) {
-
-        boolean show2 = false;
-        ArrayList<Student> list2 = new ArrayList<>();
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getAlbumNumber() > itemToShow) {
-                list2.add(list.get(i));
-            }
-        }
-
-        for (int j = 0; j < list2.size(); j++) {
-            System.out.println(list2.get(j));
-        }
-        return show2;
     }
 
     public void editStudent(Student std) throws SQLException {
@@ -164,7 +157,7 @@ public class DB_acces {
 
             if (statement.executeUpdate() != 0) {
                 System.out.println("Student został edytowany");
-            }else {
+            } else {
                 throw new SQLException("Nie znaleziono studenta");
             }
             statement.close();

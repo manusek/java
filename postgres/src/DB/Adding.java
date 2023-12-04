@@ -16,9 +16,6 @@ public class Adding {
     public Adding() {
     }
 
-//    Student std = new Student();
-
-
     public Student addStudentLOCAL() {
         Student std = new Student();
 

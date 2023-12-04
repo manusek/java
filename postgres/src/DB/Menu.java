@@ -26,9 +26,8 @@ public class Menu {
             System.out.println("Usuń studenta (2)");
             System.out.println("Wyswietl studentów (3)");
             System.out.println("Wyswietl studenta po albumie (4)");
-            System.out.println("Wyswietl studenta po albumie wiekszym niz podany (5)");
-            System.out.println("Edytuj studenta (6)");
-            System.out.println("Zakończ (7)");
+            System.out.println("Edytuj studenta (5)");
+            System.out.println("Zakończ (6)");
             System.out.print("Jakie działanie chcesz wykonać: ");
 
             switch (checkInput()) {
@@ -47,7 +46,6 @@ public class Menu {
                         db.removeStudentID(adding.removeStudentIDLOCAL());
                     }
                 }
-
 
                 case 3 -> {
                     db.showStudents();
@@ -69,24 +67,10 @@ public class Menu {
                 }
 
                 case 5 -> {
-                    try {
-                        System.out.println(" ");
-                        System.out.print("Podaj numer albumu: ");
-
-                        int number = inputInt();
-
-                        if (!db.showStudentsByAlbumNumber2(number))
-                            throw new DeleteStudentException("Nie znaleziono studentow o podanym numerze albumu");
-                    } catch (DeleteStudentException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-
-                case 6 -> {
                     db.editStudent(adding.editStudentLOCAL());
                 }
 
-                case 7 -> {
+                case 6 -> {
                     close();
                 }
             }
