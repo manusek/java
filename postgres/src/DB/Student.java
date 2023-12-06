@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Student {
 
+    private int id;
     private String name;
     private String scndName;
     private long albumNumber;
@@ -43,13 +44,16 @@ public class Student {
         this.albumNumber = albumNumber;
     }
 
-    @Override
-    public String toString() {
-        return  "imie='" + name + '\'' +
-                ", nazwisko='" + scndName + '\'' +
-                ", numer albumu=" + albumNumber +
-                ", data utworzenia=" + date +
-                '}';
+    public void setId(int id) {
+        this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return  "id=" + id +
+                ", name='" + name + '\'' +
+                ", scndName='" + scndName + '\'' +
+                ", albumNumber=" + albumNumber +
+                ", date=" + date;
+    }
 }

@@ -9,10 +9,12 @@ public class Main {
 
         Adding adding = Adding.getInstance();
 
+        Show show = Show.getInstance();
+
         //TODO POCZYTAC O SINGLETONIE I SOLID
         //TODO DODAC DWIE KLASY (WPROWADZANIE I WYSWIETLANIE)
         try {
-            Menu menu = new Menu(dbAccess, adding);
+            Menu menu = new Menu(dbAccess, adding, show);
             menu.menu();
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n");

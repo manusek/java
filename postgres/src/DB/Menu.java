@@ -11,12 +11,13 @@ public class Menu {
 
     DB_acces db;
     Adding adding;
+    Show show;
 
-    public Menu(DB_acces db, Adding addStudent) throws SQLException {
+    public Menu(DB_acces db, Adding add, Show show) throws SQLException {
         this.db = db;
-        this.adding = addStudent;
+        this.adding = add;
+        this.show = show;
     }
-
 
     public void menu() throws SQLException {
         while (true) {
@@ -48,23 +49,23 @@ public class Menu {
                 }
 
                 case 3 -> {
-                    db.showStudents();
+                    show.showStudentsLOCAL(db.showStudents());
                 }
 
-                case 4 -> {
-                    try {
-                        System.out.println(" ");
-                        System.out.print("Podaj numer albumu:  ");
-
-                        int number = inputInt();
-
-                        if (!db.showStudentsByAlbumNumber(number)) ;
-                        throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
-                    } catch (NumberFormatException e) {
-                        System.out.println(e.getMessage());
-                    }
-
-                }
+//                case 4 -> {
+//                    try {
+//                        System.out.println(" ");
+//                        System.out.print("Podaj numer albumu:  ");
+//
+//                        int number = inputInt();
+//
+//                        if (!db.showStudentsByAlbumNumber(number)) ;
+//                        throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
+//                    } catch (NumberFormatException e) {
+//                        System.out.println(e.getMessage());
+//                    }
+//
+//                }
 
                 case 5 -> {
                     db.editStudent(adding.editStudentLOCAL());
@@ -76,7 +77,6 @@ public class Menu {
             }
         }
     }
-
 
     public String inputString() {
         Scanner scanner = new Scanner(System.in);
