@@ -22,7 +22,8 @@ public class DB_acces {
     static String password = "admin";
 
     private static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbcUrl, username, password);
+        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        return connection;
     }
 
     public void addStudentDB(Student std) throws SQLException {

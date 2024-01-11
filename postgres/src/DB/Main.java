@@ -11,8 +11,6 @@ public class Main {
 
         Show show = Show.getInstance();
 
-        //TODO POCZYTAC O SINGLETONIE I SOLID
-        //TODO DODAC DWIE KLASY (WPROWADZANIE I WYSWIETLANIE)
         try {
             Menu menu = new Menu(dbAccess, adding, show);
             menu.menu();

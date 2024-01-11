@@ -69,7 +69,6 @@ public class Adding {
         return std;
     }
 
-
     public String inputString() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
