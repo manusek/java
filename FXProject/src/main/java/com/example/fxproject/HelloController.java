@@ -4,10 +4,12 @@ package com.example.fxproject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
+
 import javax.swing.*;
 import java.net.URL;
 import java.sql.Connection;
@@ -72,6 +74,9 @@ public class HelloController implements Initializable {
 
     public void Add_users() throws SQLException {
         conn = ConnectDB.getConnection();
+
+        isEmpty();
+
         String sql = "insert into students (name, scndname, city, albumnumber)values(?,?,?,? )";
         try {
             String name = name_txt.getText();
@@ -91,9 +96,17 @@ public class HelloController implements Initializable {
 
             JOptionPane.showMessageDialog(null, "Users Add succes");
             updateTable();
+
+            id_txt.setText("");
+            name_txt.setText("");
+            ndname_txt.setText("");
+            city_txt.setText("");
+            album_txt.setText("");
+            date_txt.setText("");
+
             //search_user();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Wystąpił błąd. Opis: "+e.getMessage(), "Błąd", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Wprowadzono nieprawidłowe dane!", "Błąd", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -111,8 +124,9 @@ public class HelloController implements Initializable {
         date_txt.setText(creationDate.getCellData(index).toString());
     }
 
-    public void Edit() {
+    public void Edit() throws Exception {
         try {
+
             conn = ConnectDB.getConnection();
 
             String value1 = id_txt.getText();
@@ -121,8 +135,14 @@ public class HelloController implements Initializable {
             String value4 = city_txt.getText();
             String value5 = album_txt.getText();
 
-            //walidacja pól
-            int yourNumber = Integer.valueOf(value5);
+            isEmpty();
+
+            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || czyJestLiczba(value2) || czyJestLiczba(value3) || czyJestLiczba(value4)) {
+                throw new Exception("imie puste");
+            }
+//
+//            //walidacja pól
+//            int yourNumber = Integer.valueOf(value5);
 
 
             String sql = "update students set name= '" + value2 + "',scndname= '" +
@@ -141,11 +161,10 @@ public class HelloController implements Initializable {
             album_txt.setText("");
             date_txt.setText("");
 
-            //search_user();
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            //   search_user();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            //JOptionPane.showMessageDialog(null, "Wprowadzono nieprawidłowe dane!", "Błąd", JOptionPane.ERROR_MESSAGE);
+
         }
 
     }
@@ -160,6 +179,48 @@ public class HelloController implements Initializable {
 
         listM = ConnectDB.getDatausers();
         table.setItems(listM);
+    }
+
+    @FXML
+    private void isEmpty() {
+
+        String v1 = album_txt.getText();
+        String v2 = name_txt.getText();
+        String v3 = ndname_txt.getText();
+        String v4 = city_txt.getText();
+
+        if (name_txt.getText().length() == 0 || czyJestLiczba(v2) == true) {
+            name_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
+            new animatefx.animation.Shake(name_txt).play();
+        } else {
+            name_txt.setStyle(null);
+        }
+
+        if (city_txt.getText().length() == 0 || czyJestLiczba(v4) == true) {
+            city_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
+            new animatefx.animation.Shake(city_txt).play();
+        } else {
+            city_txt.setStyle(null);
+        }
+
+        if (ndname_txt.getText().length() == 0 || czyJestLiczba(v3) == true) {
+            ndname_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
+            new animatefx.animation.Shake(ndname_txt).play();
+        } else {
+            ndname_txt.setStyle(null);
+        }
+
+        if (album_txt.getText().length() == 0 || czyJestLiczba(v1) == false) {
+            album_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
+            new animatefx.animation.Shake(album_txt).play();
+        } else {
+            album_txt.setStyle(null);
+        }
+    }
+
+
+    public static boolean czyJestLiczba(String value) {
+        return value.matches("\\d+");
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
