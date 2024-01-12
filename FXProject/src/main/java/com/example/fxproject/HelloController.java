@@ -2,9 +2,10 @@ package com.example.fxproject;
 
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -61,6 +62,9 @@ public class HelloController implements Initializable {
     @FXML
     private TextField date_txt;
 
+    @FXML
+    private TextField search_txt;
+
 
     ObservableList<Student> listM;
     ObservableList<Student> dataList;
@@ -72,30 +76,36 @@ public class HelloController implements Initializable {
     ResultSet rs = null;
     PreparedStatement pst = null;
 
-    public void Add_users() throws SQLException {
-        conn = ConnectDB.getConnection();
-
-        isEmpty();
-
-        String sql = "insert into students (name, scndname, city, albumnumber)values(?,?,?,? )";
+    public void addUser() throws Exception {
         try {
+            conn = ConnectDB.getConnection();
+
+            String sql = "insert into students (name, scndname, city, albumnumber)values(?,?,?,? )";
+
             String name = name_txt.getText();
             String scnd = ndname_txt.getText();
             String cityy = city_txt.getText();
             String numberalbum = album_txt.getText();
-            int nmbr = Integer.parseInt(numberalbum);
+            //int nmbr = Integer.parseInt(numberalbum);
+
+            isInputEmpty();
+
+            if (name.isEmpty() || scnd.isEmpty() || cityy.isEmpty() || isLetter(name) == false || isLetter(scnd) == false || isLetter(cityy) == false) {
+                throw new Exception("imie puste");
+            }
 
             pst = conn.prepareStatement(sql);
 
             pst.setString(1, name);
             pst.setString(2, scnd);
             pst.setString(3, cityy);
-            pst.setInt(4, nmbr);
+            pst.setInt(4, Integer.parseInt(numberalbum));
 
             pst.execute();
 
             JOptionPane.showMessageDialog(null, "Users Add succes");
             updateTable();
+            search_user();
 
             id_txt.setText("");
             name_txt.setText("");
@@ -104,13 +114,14 @@ public class HelloController implements Initializable {
             album_txt.setText("");
             date_txt.setText("");
 
-            //search_user();
+
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(null, "Wprowadzono nieprawidłowe dane!", "Błąd", JOptionPane.ERROR_MESSAGE);
         }
+        conn.close();
     }
 
-    public void getSelected(javafx.scene.input.MouseEvent mouseEvent) {
+    public void selectTextFields(javafx.scene.input.MouseEvent mouseEvent) {
         index = table.getSelectionModel().getSelectedIndex();
         if (index <= -1) {
             return;
@@ -124,7 +135,7 @@ public class HelloController implements Initializable {
         date_txt.setText(creationDate.getCellData(index).toString());
     }
 
-    public void Edit() throws Exception {
+    public void editUser() throws Exception {
         try {
 
             conn = ConnectDB.getConnection();
@@ -135,15 +146,11 @@ public class HelloController implements Initializable {
             String value4 = city_txt.getText();
             String value5 = album_txt.getText();
 
-            isEmpty();
+            isInputEmpty();
 
-            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || czyJestLiczba(value2) || czyJestLiczba(value3) || czyJestLiczba(value4)) {
+            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || isLetter(value2) == false || isLetter(value3) == false || isLetter(value4) == false) {
                 throw new Exception("imie puste");
             }
-//
-//            //walidacja pól
-//            int yourNumber = Integer.valueOf(value5);
-
 
             String sql = "update students set name= '" + value2 + "',scndname= '" +
                     value3 + "',city= '" + value4 + "',albumnumber= " + value5 + " where id=" + value1 + " ";
@@ -153,7 +160,7 @@ public class HelloController implements Initializable {
 
             JOptionPane.showMessageDialog(null, "Update");
             updateTable();
-
+            search_user();
             id_txt.setText("");
             name_txt.setText("");
             ndname_txt.setText("");
@@ -161,12 +168,37 @@ public class HelloController implements Initializable {
             album_txt.setText("");
             date_txt.setText("");
 
-            //   search_user();
+
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(null, "Wprowadzono nieprawidłowe dane!", "Błąd", JOptionPane.ERROR_MESSAGE);
 
         }
+        conn.close();
+    }
 
+    public void deleteUser() throws SQLException {
+        try {
+            conn = ConnectDB.getConnection();
+
+            String id = id_txt.getText();
+
+            String sql = "delete from students where id =" + id;
+
+
+            pst = conn.prepareStatement(sql);
+
+            //pst.setString(1, idd);
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "User deleted");
+            updateTable();
+            search_user();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Nie istnieje student o podanym id", "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
+        conn.close();
     }
 
     public void updateTable() {
@@ -182,35 +214,74 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    private void isEmpty() {
+    void search_user() {
+        id.setCellValueFactory(new PropertyValueFactory<Student, Integer>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<Student, String>("name"));
+        scndName.setCellValueFactory(new PropertyValueFactory<Student, String>("scndName"));
+        city.setCellValueFactory(new PropertyValueFactory<Student, String>("city"));
+        albumNumber.setCellValueFactory(new PropertyValueFactory<Student, Integer>("albumNumber"));
+
+        dataList = ConnectDB.getDatausers();
+
+        table.setItems(dataList);
+        FilteredList<Student> filteredData = new FilteredList<>(dataList, b -> true);
+        search_txt.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate((Student person) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (person.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true; // Filter matches username
+                } else if (person.getScndName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true; // Filter matches password
+                } else if (person.getCity().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true; // Filter matches password
+                } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1)
+                    return true;// Filter matches email
+
+                else
+                    return false; // Does not match.
+            });
+        });
+
+        SortedList<Student> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sortedData);
+    }
+
+    @FXML
+    private void isInputEmpty() {
 
         String v1 = album_txt.getText();
         String v2 = name_txt.getText();
         String v3 = ndname_txt.getText();
         String v4 = city_txt.getText();
 
-        if (name_txt.getText().length() == 0 || czyJestLiczba(v2) == true) {
+        if (name_txt.getText().length() == 0 || isLetter(v2) == false) {
             name_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(name_txt).play();
         } else {
             name_txt.setStyle(null);
         }
 
-        if (city_txt.getText().length() == 0 || czyJestLiczba(v4) == true) {
+        if (city_txt.getText().length() == 0 || isLetter(v4) == false) {
             city_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(city_txt).play();
         } else {
             city_txt.setStyle(null);
         }
 
-        if (ndname_txt.getText().length() == 0 || czyJestLiczba(v3) == true) {
+        if (ndname_txt.getText().length() == 0 || isLetter(v3) == false) {
             ndname_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(ndname_txt).play();
         } else {
             ndname_txt.setStyle(null);
         }
 
-        if (album_txt.getText().length() == 0 || czyJestLiczba(v1) == false) {
+        if (album_txt.getText().length() == 0 || isNumber(v1) == false) {
             album_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(album_txt).play();
         } else {
@@ -219,12 +290,23 @@ public class HelloController implements Initializable {
     }
 
 
-    public static boolean czyJestLiczba(String value) {
+    public static boolean isNumber(String value) {
         return value.matches("\\d+");
+    }
+
+    public static boolean isLetter(String input) {
+        // Sprawdzamy, czy każdy znak w wartości to litera
+        for (int i = 0; i < input.length(); i++) {
+            if (!Character.isLetter(input.charAt(i))) {
+                return false; // Jeśli znaleziono znak niebędący literą, zwracamy false
+            }
+        }
+        return true; // Jeśli przejdziemy przez całą wartość bez problemów, zwracamy true
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateTable();
+        search_user();
     }
 
 }
