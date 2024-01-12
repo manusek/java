@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="613.0" maxWidth="793.0" minHeight="584.0" minWidth="771.0" prefHeight="613.0" prefWidth="793.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.HelloController">
    <children>
-      <AnchorPane layoutX="8.0" layoutY="5.0" prefHeight="603.0" prefWidth="220.0" style="-fx-background-color: #C0C0C0; -fx-background-radius: 9;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="568.0" AnchorPane.topAnchor="5.0">
+      <AnchorPane layoutX="8.0" layoutY="5.0" prefHeight="603.0" prefWidth="220.0" style="-fx-background-color: gray; -fx-background-radius: 9;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="568.0" AnchorPane.topAnchor="5.0">
          <children>
             <Button layoutX="56.0" layoutY="300.0" minHeight="30.0" mnemonicParsing="false" onAction="#addUser" prefWidth="100.0" style="-fx-background-radius: 10;" text="Dodaj">
                <font>
@@ -26,7 +26,7 @@
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button layoutX="56.0" layoutY="451.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 10;" text="Odśwież">
+            <Button layoutX="56.0" layoutY="451.0" mnemonicParsing="false" onAction="#clearTextField" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 10;" text="Wyczyść">
                <font>
                   <Font size="13.0" />
                </font>

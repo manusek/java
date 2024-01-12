@@ -69,7 +69,6 @@ public class HelloController implements Initializable {
     ObservableList<Student> listM;
     ObservableList<Student> dataList;
 
-
     int index = -1;
 
     Connection conn = null;
@@ -184,10 +183,7 @@ public class HelloController implements Initializable {
 
             String sql = "delete from students where id =" + id;
 
-
             pst = conn.prepareStatement(sql);
-
-            //pst.setString(1, idd);
 
             pst.execute();
 
@@ -196,7 +192,7 @@ public class HelloController implements Initializable {
             search_user();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Nie istnieje student o podanym id", "Błąd", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Student nie istnieje", "Błąd", JOptionPane.ERROR_MESSAGE);
         }
         conn.close();
     }
@@ -230,18 +226,21 @@ public class HelloController implements Initializable {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
-                
+
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (person.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (String.valueOf(person.getId()).indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (person.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true; // Filter matches username
                 } else if (person.getScndName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true; // Filter matches password
                 } else if (person.getCity().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true; // Filter matches password
-                } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1)
+                } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1){
                     return true;// Filter matches email
-
+                } else if (String.valueOf(person.getCreationDate()).indexOf(lowerCaseFilter) != -1)
+                    return true;// Filter matches email
                 else
                     return false; // Does not match.
             });
@@ -289,6 +288,15 @@ public class HelloController implements Initializable {
         }
     }
 
+    public void clearTextField(){
+        id_txt.setText("");
+        name_txt.setText("");
+        ndname_txt.setText("");
+        city_txt.setText("");
+        album_txt.setText("");
+        date_txt.setText("");
+
+    }
 
     public static boolean isNumber(String value) {
         return value.matches("\\d+");
