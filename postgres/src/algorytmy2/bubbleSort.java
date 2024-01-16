@@ -39,10 +39,11 @@ public class bubbleSort {
         }
     }
 
-    public static void bubbleSort2(int[] tab) {
-        for (int i = tab.length - 1; i > 0; i--) {
+
+    public static void bubbleSort2(int[] tab){
+        for (int i = tab.length - 1; i > 0 ; i--) {
             for (int j = 0; j < i; j++) {
-                if (tab[j] > tab[j + 1]) {
+                if (tab[j] > tab[j + 1]){
                     int a = tab[j];
                     tab[j] = tab[j + 1];
                     tab[j + 1] = a;

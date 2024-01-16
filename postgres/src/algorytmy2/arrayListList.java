@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class arrayListList {
     public static void main(String[] args) {
-        ArrayListList theList = new ArrayListList();
+        ArrayListListt theList = new ArrayListListt();
 
-        theList.addLast(234);
-        theList.addLast(23);
-        theList.addLast(2444);
-        theList.addLast(2344444);
-        theList.addLast(25);
-        theList.addLast(1);
+        theList.push(234);
+        theList.push(23);
+        theList.push(2444);
+        theList.push(2344444);
+        theList.push(25);
+        theList.push(1);
         theList.print();
         System.out.println("");
 
@@ -38,30 +38,65 @@ public class arrayListList {
             listList = new ArrayList<Integer>();
         }
 
-        public boolean addLast(int element){
+        public boolean pushLast(int element) {
             return listList.add(element);
         }
 
-        public int removeLast(){
-            int lastElement = listList.size() - 1;
-            return listList.remove(lastElement);
+        public int removeLast() {
+            int a = listList.get(listList.size() - 1);
+            return listList.remove(a);
         }
 
-        public int size(){
+        public int size() {
             return listList.size();
         }
 
-        public int find(int element){
+        public int find(int element) {
             return listList.indexOf(element);
         }
 
-        public int get(int element){
+        public int get(int element) {
             return listList.get(element);
         }
 
-        public void print(){
+        public void print() {
             for (int i = 0; i < listList.size(); i++) {
-                System.out.println(listList.get(i));
+                System.out.println(listList.get(i) + " ");
+            }
+        }
+    }
+
+    public static class ArrayListListt{
+        private ArrayList<Integer> list;
+
+        public ArrayListListt() {
+            list = new ArrayList<Integer>();
+        }
+
+        public boolean push(int element){
+            return list.add(element);
+        }
+
+        public int removeLast(){
+            int a = list.size() - 1;
+            return list.remove(a);
+        }
+
+        public int size(){
+            return list.size();
+        }
+
+        public int find(int element){
+            return list.indexOf(element);
+        }
+
+        public int get(int element){
+            return list.get(element);
+        }
+
+        public void print(){
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(list.get(i) + " ");
             }
         }
     }

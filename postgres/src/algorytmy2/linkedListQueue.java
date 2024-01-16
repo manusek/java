@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class linkedListQueue {
     public static void main(String[] args) {
-        LinkedListQueue theQueue = new LinkedListQueue();  // kolejka
+        LinkedListQueuee theQueue = new LinkedListQueuee();  // kolejka
 
         System.out.println("Wstawiam: 10");
         theQueue.push(10);
@@ -66,5 +66,35 @@ public class linkedListQueue {
         }
     }
 
+    public static class LinkedListQueuee{
+        private LinkedList<Integer> list;
 
+        public LinkedListQueuee() {
+            list = new LinkedList<Integer>();
+        }
+
+        public void push(int element){
+            list.add(element);
+        }
+
+        public int peek(){
+            return list.peekFirst().intValue();
+        }
+
+        public int remove(){
+            int a = list.peekFirst().intValue();
+            list.removeFirst();
+            return a;
+        }
+
+        public int size(){
+            return list.size();
+        }
+
+        public boolean isEmpty(){
+            return list.isEmpty();
+        }
+
+
+    }
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class arrayListQueue {
     public static void main(String[] args) {
-        ArrayListQueue theQueue = new ArrayListQueue();  // kolejka pięcioelementowa z relokacja
+        ArrayListQueuee theQueue = new ArrayListQueuee();  // kolejka pięcioelementowa z relokacja
 
         System.out.println("Wstawiam: 10");
         theQueue.push(10);
@@ -39,35 +39,63 @@ public class arrayListQueue {
         System.out.println("");
     }
 
-    public static class ArrayListQueue{
+    public static class ArrayListQueue {
         private ArrayList<Integer> listQueue;
 
         public ArrayListQueue() {
             listQueue = new ArrayList<Integer>();
         }
 
-        public void push(int element){
+        public void push(int element) {
             listQueue.add(element);
         }
 
-        public int peek(){
+        public int peek() {
             return listQueue.get(0).intValue();
         }
 
-        public boolean isEmpty(){
+        public boolean isEmpty() {
             return listQueue.isEmpty();
         }
 
-        public int remove(){
+        public int remove() {
             int firsElement = listQueue.get(0).intValue();
             listQueue.remove(0);
             return firsElement;
         }
 
-        public int size(){
+        public int size() {
             return listQueue.size();
         }
     }
 
+    public static class ArrayListQueuee {
+        private ArrayList<Integer> list;
 
+        public ArrayListQueuee() {
+            list = new ArrayList<Integer>();
+        }
+
+        public void push(int element){
+            list.add(element);
+        }
+
+        public int peek(){
+            return list.get(0).intValue();
+        }
+
+        public int remove(){
+            int a = list.get(0).intValue();
+            list.remove(0);
+            return a;
+        }
+
+        public int size(){
+            return list.size();
+        }
+
+        public boolean isEmpty(){
+            return list.isEmpty();
+        }
+    }
 }
