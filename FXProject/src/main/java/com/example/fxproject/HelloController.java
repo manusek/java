@@ -93,7 +93,7 @@ public class HelloController implements Initializable {
             isInputEmpty();
 
             int nmbr = Integer.parseInt(numberalbum);
-            if (name.isEmpty() || scnd.isEmpty() || cityy.isEmpty() || isLetter(name) == false || isLetter(scnd) == false || isLetter(cityy) == false || nmbr < 0) {
+            if (name.isEmpty() || scnd.isEmpty() || cityy.isEmpty() || isLetter(name) == false || isLetter(scnd) == false || isLetter(cityy) == false || nmbr < 0 || inputLenght(nmbr) != 6) {
                 throw new Exception("imie puste");
             }
 
@@ -106,9 +106,9 @@ public class HelloController implements Initializable {
 
             pst.execute();
 
-            JOptionPane.showMessageDialog(null, "Users Add succes");
+            JOptionPane.showMessageDialog(null, "Student dodany");
             updateTable();
-            search_user();
+            searchUser();
 
             id_txt.setText("");
             name_txt.setText("");
@@ -153,7 +153,7 @@ public class HelloController implements Initializable {
 
             int nmbr = Integer.parseInt(value5);
 
-            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || isLetter(value2) == false || isLetter(value3) == false || isLetter(value4) == false || nmbr < 0) {
+            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || isLetter(value2) == false || isLetter(value3) == false || isLetter(value4) == false || nmbr < 0 || inputLenght(nmbr) != 6) {
                 throw new Exception("imie puste");
             }
 
@@ -163,9 +163,9 @@ public class HelloController implements Initializable {
             pst = conn.prepareStatement(sql);
             pst.execute();
 
-            JOptionPane.showMessageDialog(null, "Update");
+            JOptionPane.showMessageDialog(null, "Student zedytowany");
             updateTable();
-            search_user();
+            searchUser();
             id_txt.setText("");
             name_txt.setText("");
             ndname_txt.setText("");
@@ -192,9 +192,9 @@ public class HelloController implements Initializable {
 
             pst.execute();
 
-            JOptionPane.showMessageDialog(null, "User deleted");
+            JOptionPane.showMessageDialog(null, "Student usunięty");
             updateTable();
-            search_user();
+            searchUser();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Student nie istnieje", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -215,7 +215,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    public void search_user() {
+    public void searchUser() {
         id.setCellValueFactory(new PropertyValueFactory<Student, Integer>("id"));
         name.setCellValueFactory(new PropertyValueFactory<Student, String>("name"));
         scndName.setCellValueFactory(new PropertyValueFactory<Student, String>("scndName"));
@@ -237,17 +237,17 @@ public class HelloController implements Initializable {
                 if (String.valueOf(person.getId()).indexOf(lowerCaseFilter) != -1) {
                     return true;
                 } else if (person.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true; // Filter matches username
+                    return true;
                 } else if (person.getScndName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true; // Filter matches password
+                    return true;
                 } else if (person.getCity().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true; // Filter matches password
+                    return true;
                 } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1) {
-                    return true;// Filter matches email
+                    return true;
                 } else if (String.valueOf(person.getCreationDate()).indexOf(lowerCaseFilter) != -1)
-                    return true;// Filter matches email
+                    return true;
                 else
-                    return false; // Does not match.
+                    return false;
             });
         });
 
@@ -287,7 +287,7 @@ public class HelloController implements Initializable {
             ndname_txt.setStyle(null);
         }
 
-        if (album_txt.getText().isEmpty() || isNumber(v1) == false) {
+        if (album_txt.getText().isEmpty() || isNumber(v1) == false || inputLenght(Integer.parseInt(v1)) != 6) {
             album_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(album_txt).play();
         } else {
@@ -310,18 +310,23 @@ public class HelloController implements Initializable {
     }
 
     public static boolean isLetter(String input) {
-        // Sprawdzamy, czy każdy znak w wartości to litera
         for (int i = 0; i < input.length(); i++) {
             if (!Character.isLetter(input.charAt(i))) {
-                return false; // Jeśli znaleziono znak niebędący literą, zwracamy false
+                return false;
             }
         }
-        return true; // Jeśli przejdziemy przez całą wartość bez problemów, zwracamy true
+        return true;
+    }
+
+    static int inputLenght(int input) {
+        String charNumber = Integer.toString(input);
+
+        return charNumber.length();
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateTable();
-        search_user();
+        searchUser();
     }
 
 }
