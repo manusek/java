@@ -38,6 +38,7 @@ public class linkedListList {
             return list.isEmpty();
         }
 
+
         public void pushFirst(int element){
             list.addFirst(element);
         }
@@ -68,8 +69,11 @@ public class linkedListList {
 
         public void print(){
             for (int i = 0; i < list.size(); i++) {
-                System.out.println(list.get(i) + " ");
+                System.out.println(list.get(i) + "");
             }
         }
+
+
+
     }
 }

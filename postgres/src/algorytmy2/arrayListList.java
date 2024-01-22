@@ -67,7 +67,7 @@ public class arrayListList {
     }
 
     public static class ArrayListListt{
-        private ArrayList<Integer> list;
+      private ArrayList<Integer> list;
 
         public ArrayListListt() {
             list = new ArrayList<Integer>();
@@ -96,7 +96,7 @@ public class arrayListList {
 
         public void print(){
             for (int i = 0; i < list.size(); i++) {
-                System.out.println(list.get(i) + " ");
+                System.out.println(list.get(i) + "");
             }
         }
     }

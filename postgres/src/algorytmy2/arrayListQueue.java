@@ -76,26 +76,27 @@ public class arrayListQueue {
             list = new ArrayList<Integer>();
         }
 
-        public void push(int element){
+        public void push(int element) {
             list.add(element);
         }
 
-        public int peek(){
+        public int peek() {
             return list.get(0).intValue();
         }
 
-        public int remove(){
+        public int remove() {
             int a = list.get(0).intValue();
             list.remove(0);
             return a;
         }
 
-        public int size(){
+        public int size() {
             return list.size();
         }
 
         public boolean isEmpty(){
             return list.isEmpty();
         }
+
     }
 }

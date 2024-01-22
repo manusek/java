@@ -15,10 +15,10 @@ public class linkedListQueue {
         System.out.println("Wstawiam: 40");
         theQueue.push(40);
 
-        int elem = theQueue.remove();              // usuwamy 3 elementy
-        System.out.println(" Usuwam: "+elem);
-        System.out.println(" Usuwam: "+theQueue.remove());
-        System.out.println(" Usuwam: "+theQueue.remove());
+        int elem = theQueue.delete();              // usuwamy 3 elementy
+        System.out.println(" Usuwam: " + elem);
+        System.out.println(" Usuwam: " + theQueue.delete());
+        System.out.println(" Usuwam: " + theQueue.delete());
 
         System.out.println("Wstawiam: 50");
         theQueue.push(50);
@@ -31,70 +31,68 @@ public class linkedListQueue {
 
         while (!theQueue.isEmpty())    // usuwamy i wypisujemy...
         {                            // ...wszystkie elementy
-            System.out.println(" Usuwam: "+theQueue.remove());
+            System.out.println(" Usuwam: " + theQueue.delete());
         }
         System.out.println("");
     }
 
-    public static class LinkedListQueue{
+    public static class LinkedListQueue {
         private LinkedList<Integer> listQueue;
 
         public LinkedListQueue() {
             listQueue = new LinkedList<Integer>();
         }
 
-        public void push(int element){
-            listQueue.add(element);
+        public void push(int element) {
+            listQueue.addLast(element);
         }
 
-        public int peek(){
+        public int peek() {
             return listQueue.peekFirst().intValue();
         }
 
-        public boolean isEmpty(){
+        public boolean isEmpty() {
             return listQueue.isEmpty();
         }
 
-        public int size(){
+        public int size() {
             return listQueue.size();
         }
 
-        public int remove(){
+        public int remove() {
             int firstElement = listQueue.peekFirst().intValue();
             listQueue.removeFirst();
             return firstElement;
         }
     }
 
-    public static class LinkedListQueuee{
+    public static class LinkedListQueuee {
         private LinkedList<Integer> list;
 
         public LinkedListQueuee() {
             list = new LinkedList<Integer>();
         }
 
-        public void push(int element){
+        public void push(int element) {
             list.add(element);
         }
 
-        public int peek(){
+       public int peek(){
             return list.peekFirst().intValue();
-        }
+       }
 
-        public int remove(){
+       public int delete(){
             int a = list.peekFirst().intValue();
             list.removeFirst();
             return a;
-        }
+       }
 
-        public int size(){
+       public int size(){
             return list.size();
-        }
+       }
 
-        public boolean isEmpty(){
+       public boolean isEmpty(){
             return list.isEmpty();
-        }
-
-
+       }
     }
 }

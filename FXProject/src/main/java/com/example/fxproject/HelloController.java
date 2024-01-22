@@ -68,7 +68,6 @@ public class HelloController implements Initializable {
 
     ObservableList<Student> listM;
     ObservableList<Student> dataList;
-
     int index = -1;
 
     Connection conn = null;
@@ -85,11 +84,11 @@ public class HelloController implements Initializable {
             String scnd = ndname_txt.getText();
             String cityy = city_txt.getText();
             String numberalbum = album_txt.getText();
-            //int nmbr = Integer.parseInt(numberalbum);
 
             isInputEmpty();
 
-            if (name.isEmpty() || scnd.isEmpty() || cityy.isEmpty() || isLetter(name) == false || isLetter(scnd) == false || isLetter(cityy) == false) {
+            int nmbr = Integer.parseInt(numberalbum);
+            if (name.isEmpty() || scnd.isEmpty() || cityy.isEmpty() || isLetter(name) == false || isLetter(scnd) == false || isLetter(cityy) == false || nmbr < 0) {
                 throw new Exception("imie puste");
             }
 
@@ -147,7 +146,9 @@ public class HelloController implements Initializable {
 
             isInputEmpty();
 
-            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || isLetter(value2) == false || isLetter(value3) == false || isLetter(value4) == false) {
+            int nmbr = Integer.parseInt(value5);
+
+            if (value2.isEmpty() || value3.isEmpty() || value4.isEmpty() || isLetter(value2) == false || isLetter(value3) == false || isLetter(value4) == false || nmbr < 0) {
                 throw new Exception("imie puste");
             }
 
@@ -170,7 +171,6 @@ public class HelloController implements Initializable {
 
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(null, "Wprowadzono nieprawidłowe dane!", "Błąd", JOptionPane.ERROR_MESSAGE);
-
         }
         conn.close();
     }
@@ -210,7 +210,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void search_user() {
+    public void search_user() {
         id.setCellValueFactory(new PropertyValueFactory<Student, Integer>("id"));
         name.setCellValueFactory(new PropertyValueFactory<Student, String>("name"));
         scndName.setCellValueFactory(new PropertyValueFactory<Student, String>("scndName"));
@@ -237,7 +237,7 @@ public class HelloController implements Initializable {
                     return true; // Filter matches password
                 } else if (person.getCity().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true; // Filter matches password
-                } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1){
+                } else if (String.valueOf(person.getAlbumNumber()).indexOf(lowerCaseFilter) != -1) {
                     return true;// Filter matches email
                 } else if (String.valueOf(person.getCreationDate()).indexOf(lowerCaseFilter) != -1)
                     return true;// Filter matches email
@@ -259,28 +259,28 @@ public class HelloController implements Initializable {
         String v3 = ndname_txt.getText();
         String v4 = city_txt.getText();
 
-        if (name_txt.getText().length() == 0 || isLetter(v2) == false) {
+        if (name_txt.getText().isEmpty() || isLetter(v2) == false) {
             name_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(name_txt).play();
         } else {
             name_txt.setStyle(null);
         }
 
-        if (city_txt.getText().length() == 0 || isLetter(v4) == false) {
+        if (city_txt.getText().isEmpty() || isLetter(v4) == false) {
             city_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(city_txt).play();
         } else {
             city_txt.setStyle(null);
         }
 
-        if (ndname_txt.getText().length() == 0 || isLetter(v3) == false) {
+        if (ndname_txt.getText().isEmpty() || isLetter(v3) == false) {
             ndname_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(ndname_txt).play();
         } else {
             ndname_txt.setStyle(null);
         }
 
-        if (album_txt.getText().length() == 0 || isNumber(v1) == false) {
+        if (album_txt.getText().isEmpty() || isNumber(v1) == false) {
             album_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(album_txt).play();
         } else {
@@ -288,7 +288,7 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void clearTextField(){
+    public void clearTextField() {
         id_txt.setText("");
         name_txt.setText("");
         ndname_txt.setText("");
