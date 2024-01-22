@@ -6,6 +6,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -64,6 +65,10 @@ public class HelloController implements Initializable {
 
     @FXML
     private TextField search_txt;
+
+
+    @FXML
+    private Label name_error;
 
 
     ObservableList<Student> listM;
@@ -262,8 +267,10 @@ public class HelloController implements Initializable {
         if (name_txt.getText().isEmpty() || isLetter(v2) == false) {
             name_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(name_txt).play();
+            name_error.setText("Nieprawidłowe imie");
         } else {
             name_txt.setStyle(null);
+            name_error.setText("");
         }
 
         if (city_txt.getText().isEmpty() || isLetter(v4) == false) {
