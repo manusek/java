@@ -69,6 +69,13 @@ public class HelloController implements Initializable {
 
     @FXML
     private Label name_error;
+    @FXML
+    private Label city_error;
+    @FXML
+    private Label ndname_error;
+
+    @FXML
+    private Label nr_error;
 
 
     ObservableList<Student> listM;
@@ -276,22 +283,28 @@ public class HelloController implements Initializable {
         if (city_txt.getText().isEmpty() || isLetter(v4) == false) {
             city_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(city_txt).play();
+            city_error.setText("Nieprawidłowe miasto");
         } else {
             city_txt.setStyle(null);
+            city_error.setText("");
         }
 
         if (ndname_txt.getText().isEmpty() || isLetter(v3) == false) {
             ndname_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(ndname_txt).play();
+            ndname_error.setText("Nieprawidłowe nazwisko");
         } else {
             ndname_txt.setStyle(null);
+            ndname_error.setText("");
         }
 
         if (album_txt.getText().isEmpty() || isNumber(v1) == false || inputLenght(Integer.parseInt(v1)) != 6) {
             album_txt.setStyle("-fx-border-color: red ; -fx-border-width: 2px ; -fx-border-radius: 3 ;");
             new animatefx.animation.Shake(album_txt).play();
+            nr_error.setText("Nieprawidłowy nr albumu");
         } else {
             album_txt.setStyle(null);
+            nr_error.setText("");
         }
     }
 
@@ -302,6 +315,19 @@ public class HelloController implements Initializable {
         city_txt.setText("");
         album_txt.setText("");
         date_txt.setText("");
+
+        name_txt.setStyle(null);
+        name_error.setText("");
+
+        city_txt.setStyle(null);
+        city_error.setText("");
+
+        ndname_txt.setStyle(null);
+        ndname_error.setText("");
+
+        album_txt.setStyle(null);
+        nr_error.setText("");
+
 
     }
 

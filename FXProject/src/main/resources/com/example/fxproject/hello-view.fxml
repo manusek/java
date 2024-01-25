@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="613.0" maxWidth="793.0" minHeight="584.0" minWidth="771.0" prefHeight="613.0" prefWidth="793.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.HelloController">
+<AnchorPane maxHeight="613.0" maxWidth="793.0" minHeight="584.0" minWidth="771.0" prefHeight="613.0" prefWidth="793.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fxproject.HelloController">
    <children>
-      <AnchorPane layoutX="8.0" layoutY="5.0" prefHeight="603.0" prefWidth="220.0" style="-fx-background-color: gray; -fx-background-radius: 9;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="568.0" AnchorPane.topAnchor="5.0">
+      <AnchorPane layoutX="8.0" layoutY="5.0" prefHeight="603.0" prefWidth="220.0" style="-fx-background-color: grey; -fx-background-radius: 9;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="565.0" AnchorPane.topAnchor="5.0">
          <children>
             <Button layoutX="56.0" layoutY="300.0" minHeight="30.0" mnemonicParsing="false" onAction="#addUser" prefWidth="100.0" style="-fx-background-radius: 10;" text="Dodaj">
                <font>
@@ -39,6 +39,9 @@
             <TextField fx:id="id_txt" disable="true" layoutX="32.0" layoutY="14.0" promptText="ID" />
             <TextField fx:id="date_txt" disable="true" layoutX="32.0" layoutY="235.0" promptText="Data utworzenia" />
             <Label fx:id="name_error" layoutX="32.0" layoutY="82.0" prefHeight="17.0" prefWidth="149.0" style="-fx-text-fill: red;" />
+            <Label fx:id="ndname_error" layoutX="32.0" layoutY="124.0" prefHeight="17.0" prefWidth="149.0" style="-fx-text-fill: red;" />
+            <Label fx:id="nr_error" layoutX="32.0" layoutY="170.0" prefHeight="17.0" prefWidth="149.0" style="-fx-text-fill: red;" />
+            <Label fx:id="city_error" layoutX="32.0" layoutY="216.0" prefHeight="17.0" prefWidth="149.0" style="-fx-text-fill: red;" />
          </children>
       </AnchorPane>
       <TableView fx:id="table" layoutX="228.0" layoutY="60.0" onMouseClicked="#selectTextFields" prefHeight="548.0" prefWidth="560.0" style="-fx-background-radius: 9;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="228.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
