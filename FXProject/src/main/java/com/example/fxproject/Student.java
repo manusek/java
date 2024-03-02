@@ -1,6 +1,5 @@
 package com.example.fxproject;
 
-
 import java.util.Date;
 
 public class Student {
@@ -10,8 +9,6 @@ public class Student {
     private String city;
     private int albumNumber;
     private Date creationDate;
-
-
 
 
     public Student(int id, String name, String scndName, String city, int albumNumber, Date date){

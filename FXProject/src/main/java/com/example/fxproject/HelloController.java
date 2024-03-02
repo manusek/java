@@ -11,12 +11,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
-
 import javax.swing.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -45,6 +43,7 @@ public class HelloController implements Initializable {
     @FXML
     private TableColumn<Student, String> scndName;
 
+
     @FXML
     private TextField album_txt;
 
@@ -69,8 +68,10 @@ public class HelloController implements Initializable {
 
     @FXML
     private Label name_error;
+
     @FXML
     private Label city_error;
+
     @FXML
     private Label ndname_error;
 
@@ -83,7 +84,6 @@ public class HelloController implements Initializable {
     int index = -1;
 
     Connection conn = null;
-    ResultSet rs = null;
     PreparedStatement pst = null;
 
     public void addUser() throws Exception {
@@ -117,12 +117,7 @@ public class HelloController implements Initializable {
             updateTable();
             searchUser();
 
-            id_txt.setText("");
-            name_txt.setText("");
-            ndname_txt.setText("");
-            city_txt.setText("");
-            album_txt.setText("");
-            date_txt.setText("");
+            clearTextField();
 
 
         } catch (Exception e) {
@@ -173,12 +168,7 @@ public class HelloController implements Initializable {
             JOptionPane.showMessageDialog(null, "Student zedytowany");
             updateTable();
             searchUser();
-            id_txt.setText("");
-            name_txt.setText("");
-            ndname_txt.setText("");
-            city_txt.setText("");
-            album_txt.setText("");
-            date_txt.setText("");
+            clearTextField();
 
 
         } catch (Exception e) {
@@ -202,6 +192,8 @@ public class HelloController implements Initializable {
             JOptionPane.showMessageDialog(null, "Student usunięty");
             updateTable();
             searchUser();
+
+            clearTextField();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Student nie istnieje", "Błąd", JOptionPane.ERROR_MESSAGE);

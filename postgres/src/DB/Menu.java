@@ -52,21 +52,6 @@ public class Menu {
                     show.showStudentsLOCAL(db.showStudents());
                 }
 
-//                case 4 -> {
-//                    try {
-//                        System.out.println(" ");
-//                        System.out.print("Podaj numer albumu:  ");
-//
-//                        int number = inputInt();
-//
-//                        if (!db.showStudentsByAlbumNumber(number)) ;
-//                        throw new NumberFormatException("Nie istnieje student o podanym numerze albumu");
-//                    } catch (NumberFormatException e) {
-//                        System.out.println(e.getMessage());
-//                    }
-//
-//                }
-
                 case 5 -> {
                     db.editStudent(adding.editStudentLOCAL());
                 }

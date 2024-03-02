@@ -15,7 +15,7 @@ public class DB_acces {
             dbAcces = new DB_acces();
         }
         return dbAcces;
-    }
+    }   
 
     static String jdbcUrl = "jdbc:postgresql://127.0.0.1:5432/javaTest";
     static String username = "postgres";
